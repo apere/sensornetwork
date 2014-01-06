@@ -25,13 +25,17 @@
         <script type="text/javascript">
             
             
-            var users = [{
+            var users =  [
+                {
                     user: 0,
-                    pos: [ [10,20], [12,22], [16, 25], [20, 27]]
+                    pos: [ [20, 70], [30, 80], [40, 85], [50, 95] ]
                 },
                 {
                     user: 1,
-                    pos: [[20,30], [32,42], [36, 35], [30, 37]]
+                    pos: [ [60, 110], [70, 120], [80, 135], [90, 155] ]
+                },{
+                    user: 1,
+                    pos:  [ [90, 140], [100, 160], [120, 205], [110, 210]]
                 }];
             
             var dataset = [
@@ -57,11 +61,11 @@
             
             var getX = function(d){
                 return d[0];   
-            }
+            };
             
             var getY = function(d){
                 return d[1];
-            }
+            };
                 
             
             var xScale = d3.scale.linear()
