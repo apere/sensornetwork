@@ -7,22 +7,24 @@
         <style type="text/css">
 		
 			.axis path,
-            .axis line {
-                fill: none;
-                stroke: black;
-                shape-rendering: crispEdges;
-            }
-            
-            .axis text {
-                font-family: sans-serif;
-                font-size: 11px;
-            }
+			.axis line {
+				fill: none;
+				stroke: black;
+				shape-rendering: crispEdges;
+			}
+			
+			.axis text {
+				font-family: sans-serif;
+				font-size: 11px;
+			}
 		
 		</style>
     </head>
     <body>
         
         <script type="text/javascript">
+            
+            
             var users = [{
                     user: 0,
                     pos: [ [10,20], [12,22], [16, 25], [20, 27]]
@@ -33,14 +35,20 @@
                 }];
             
             var dataset = [
-							[5, 20], [480, 90], [250, 50], [100, 33], [330, 95],
-							[410, 12], [475, 44], [25, 67], [85, 21], [220, 88],
-							[600, 150]
+							[20, 70], [30, 80], [40, 85], [50, 95],
+                            [60, 110], [70, 120], [80, 135], [90, 155],
+                            [90, 140], [100, 160], [120, 205], [110, 210]  //Same numbers as dataset2D to ensure scale is correct
 						  ];
             
+            var dataset2D = [
+                                [ [20, 70], [30, 80], [40, 85], [50, 95] ],
+                                [ [60, 110], [70, 120], [80, 135], [90, 155] ],
+                                [ [90, 140], [100, 160], [120, 205], [110, 210] ]
+                            ];
+            
             //Width and height
-            var w = 700;
-            var h = 700;
+            var w = 800;
+            var h = 800;
             var padding = 30;
             
             var key = function(d){
@@ -68,6 +76,18 @@
                      .domain([0, 70])
                      .range([2, 5]);
             
+            //Define X axis
+			var xAxis = d3.svg.axis()
+							  .scale(xScale)
+							  .orient("bottom")
+							  .ticks(5);
+
+			//Define Y axis
+			var yAxis = d3.svg.axis()
+							  .scale(yScale)
+							  .orient("left")
+							  .ticks(5);
+            
             
             var svg = d3.select("body")
                         .append("svg")
@@ -88,6 +108,20 @@
 			   .attr("r", function(d) {
 			   		return rScale(d[1]);
 			   });
+            
+            
+            
+            //Create X axis
+			svg.append("g")
+				.attr("class", "axis")
+				.attr("transform", "translate(0," + (h - padding) + ")")
+				.call(xAxis);
+			
+			//Create Y axis
+			svg.append("g")
+				.attr("class", "axis")
+				.attr("transform", "translate(" + padding + ",0)")
+				.call(yAxis);
             
         </script>
     </body>
