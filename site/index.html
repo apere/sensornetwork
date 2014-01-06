@@ -32,19 +32,25 @@
             var users = [
                   {
                     user: 0,
-                    color: "green",
+                    color: "#149314",
                     pos:  [[20, 70], [30, 80], [40, 85], [50, 95]]
                   },
                  {
                     user: 1,
-                    color: "blue",
+                    color: "#3d3dc3",
                     pos:  [[60, 110], [70, 120], [80, 135], [90, 155]]
                   },
                 {
-                    user: 1,
-                    color: "red",
+                    user: 2,
+                    color: "#d6203c",
                     pos:  [[90, 140], [100, 160], [120, 205], [110, 210]]
-                  }
+                  },
+                
+                {
+                    user: 3,
+                    color: "#ba00ff",
+                    pos:  [[45, 30], [35, 20], [40, 15], [50, 25]]
+                  },
                 
             ];
             
@@ -116,6 +122,8 @@
             series.selectAll("circle")
                  .data(getPosition)
                  .enter().append("circle")
+                 .transition()
+                 .duration(1000)
                  .attr("cx", getX)
 			     .attr("cy", getY)
                 .attr("r", function(d, i) {
@@ -134,9 +142,7 @@
 			     .attr("font-size", "11px")
 			     .attr("fill", "black");
             
-               
-            
-            
+
             //Create X axis
 			svg.append("g")
 				.attr("class", "axis")
