@@ -28,35 +28,43 @@
             var users =  [
                 {
                     user: 0,
+                    index: 0,
                     pos:  [20, 70]
                 },
                 {
                     user: 0,
+                    index: 1,
                     pos:  [30, 80]
                 },
                 {
                     user: 0,
+                    index: 2,
                     pos:  [40, 85]
                 },
                 {
                     user: 0,
+                    index: 3,
                     pos:  [50, 95]
                 },
                 
                 {
                     user: 1,
+                    index: 0,
                     pos:  [60, 110]
                 },
                 {
                     user: 1,
+                    index: 1,
                     pos:  [70, 120]
                 },
                 {
                     user: 1,
+                    index: 2,
                     pos:  [80, 135]
                 },
                 {
                     user: 1,
+                    index: 3,
                     pos:  [90, 155]
                 }
             
@@ -83,6 +91,10 @@
                 return d.user;
             };
             
+            var ind = function(d){
+                return d.index;   
+            }
+            
             var pos = function(d){
                 return d.pos;  
             };
@@ -97,11 +109,11 @@
                 
             
             var xScale = d3.scale.linear()
-                     .domain([0, d3.max(users, function(d) { return d.pos[0]; })])
+                     .domain([0, d3.max(users, function(d, i, j) { return d.pos[0]; })])
                      .range([padding, w - padding*2]);
             
             var yScale = d3.scale.linear()
-                     .domain([0, d3.max(users, function(d) { return d.pos[1]; })])
+                     .domain([0, d3.max(users, function(d, i, j) { return d.pos[1]; })])
                      .range([h - padding, padding]);
             
             var rScale = d3.scale.linear()
@@ -127,36 +139,100 @@
                         .attr("height", h);
             
             
-           svg.selectAll("circle")
-			   .data(users)
-			   .enter()
-			   .append("circle")
-			   .attr("cx", function(d) {
-			   		return xScale(d.pos[0]);
-			   })
-			   .attr("cy", function(d) {
-			   		return yScale(d.pos[1]);
-			   })
-			   .attr("r", function(d, i) {
-			   		return rScale(d.pos[0])*((i+1)%5 + 1);
-			   });
+//***** Using the 2D array (technically 3D)
+//        format:
+//        var dataset2D = [
+//                               [ [20, 70], [30, 80], [40, 85], [50, 95] ],
+//                               [ [60, 110], [70, 120], [80, 135], [90, 155] ],
+//                              [ [90, 140], [100, 160], [120, 205], [110, 210] ]
+//                        ];
+//*****            
             
-            svg.selectAll("text")
-			   .data(users)
-			   .enter()
-			   .append("text")
-			   .text(function(d, i) {
-			   		return d.user + " - " + i + ": (" + d.pos[0] + "," + d.pos[1] + ")";
-			   })
-			   .attr("x", function(d) {
-			   		return xScale(d.pos[0]);
-			   })
-			   .attr("y", function(d) {
-			   		return yScale(d.pos[1]+1);
-			   })
-			   .attr("font-family", "sans-serif")
-			   .attr("font-size", "11px")
-			   .attr("fill", "red");
+            
+            var series = svg.selectAll(".series")
+                .data(dataset2D)
+                .enter().append("svg:g")
+                .attr("class", "series");
+                            
+            
+            series.selectAll("circle")
+                 .data(         function(d,i,j) { return d;          } )
+                 .enter().append("circle")
+                 .attr("cx", function(d) {
+			   		return xScale(d[0]);
+			         })
+			     .attr("cy", function(d) {
+			   		return yScale(d[1]);
+                    })
+                .attr("r", function(d, i) {
+			   		return rScale(d[0])*((i+1)%5 + 1);
+                    });
+            
+            series.selectAll("text")
+                 .data(         function(d,i,j) { return d;          } )
+                 .enter().append("text")
+                 .attr("x", function(d) {
+			   		return xScale(d[0]);
+			         })
+			     .attr("y", function(d) {
+			   		return yScale(d[1]);
+                    })
+                .text(function(d, i, j) {
+			   		return j + " - " + i + " : (" + d[0] + ", " + d[1] + ")";
+                    })
+                .attr("font-family", "sans-serif")
+			    .attr("font-size", "11px")
+			    .attr("fill", "red");
+ 
+            
+            
+//****** Using the User obj...
+//  format:
+//            var users =  [
+//                {
+//                    user: 0,
+//                    index: 0,
+//                    pos:  [20, 70]
+//                },
+//                {
+//                    user: 0,
+//                    index: 1,
+//                    pos:  [30, 80]
+//                },
+//                ...
+//            ];
+//******            
+                
+//           svg.selectAll("circle")
+//			   .data(users)
+//			   .enter()
+//			   .append("circle")
+//			   .attr("cx", function(d) {
+//			   		return xScale(d.pos[0]);
+//			   })
+//			   .attr("cy", function(d) {
+//			   		return yScale(d.pos[1]);
+//			   })
+//			   .attr("r", function(d, i) {
+//			   		return rScale(d.pos[0])*((i+1)%5 + 1);
+//			   });
+//            
+//            svg.selectAll("text")
+//			   .data(users)
+//			   .enter()
+//			   .append("text")
+//			   .text(function(d, i) {
+//			   		return d.user + " - " + d.index + ": (" + d.pos[0] + "," + d.pos[1] + ")";
+//			   })
+//			   .attr("x", function(d) {
+//			   		return xScale(d.pos[0]);
+//			   })
+//			   .attr("y", function(d) {
+//			   		return yScale(d.pos[1]+1);
+//			   })
+//			   .attr("font-family", "sans-serif")
+//			   .attr("font-size", "11px")
+//			   .attr("fill", "red");
             
             //Create X axis
 			svg.append("g")
