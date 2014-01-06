@@ -140,15 +140,15 @@
             
             
             var xScale = d3.scale.linear()
-                     .domain([0, d3.max(series, function(d) { return d.pos[0]; })])
+                     .domain([0, d3.max(usersShort, function(d, i) { return d.pos[i][0] })])
                      .range([padding, w - padding*2]);
             
             var yScale = d3.scale.linear()
-                     .domain([0, d3.max(series, function(d) { return d.pos[1]; })])
+                     .domain([0, d3.max(usersShort, function(d, i) { return d.pos[i][1]; })])
                      .range([h - padding, padding]);
             
             var rScale = d3.scale.linear()
-                     .domain([0, 70])
+                     .domain([0, 300])
                      .range([2, 5]);
             
             //Define X axis
@@ -198,7 +198,7 @@
                     })
                 .attr("font-family", "sans-serif")
 			    .attr("font-size", "11px")
-			    .attr("fill", "red");
+			    .attr("fill", "black");
             
                
             
