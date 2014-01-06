@@ -24,8 +24,10 @@
         
         <script type="text/javascript">
             
-            
-
+            //Width and height
+            var w = 800;
+            var h = 800;
+            var padding = 40;
             
             var users = [
                   {
@@ -46,36 +48,33 @@
                 
             ];
             
-
-            
-            //Width and height
-            var w = 800;
-            var h = 800;
-            var padding = 40;
             
             var key = function(d){
                 return d.user;
             };
             
-            var ind = function(d){
-                return d.index;   
-            }
-            
-            var pos = function(d){
+            var getColor = function(d){
+                return d.color;
+            };
+                    
+            var getPosition = function(d){
                 return d.pos;  
             };
             
             var getX = function(d){
-                return d[0];   
+                return xScale(d[0]);   
             };
             
             var getY = function(d){
-                return d[1];
+                return yScale(d[1]);
             };
-                
+            
+            var pointLabel = function(d, i, j){
+                return j + " - " + i + " : (" + d[0] + ", " + d[1] + ")";
+            };
+            
 
-            
-            
+
             var xScale = d3.scale.linear()
                      .domain([0, d3.max(users, function(d, i) { return d.pos[i][0] })])
                      .range([padding, w - padding*2]);
@@ -111,20 +110,14 @@
             var series = svg.selectAll("series")
                 .data(users).enter().append("svg:g")
                 .attr("class", "series")
-                .style("fill", function(d){return d.color;});         
-            
-            
-            
+                .style("fill", getColor);         
+
             //drawing the circles
             series.selectAll("circle")
-                 .data(function(d) { return d.pos; } )
+                 .data(getPosition)
                  .enter().append("circle")
-                 .attr("cx", function(d) {
-			   		return xScale(d[0]);
-			         })
-			     .attr("cy", function(d) {
-			   		return yScale(d[1]);
-                    })
+                 .attr("cx", getX)
+			     .attr("cy", getY)
                 .attr("r", function(d, i) {
 			   		return rScale(d[0])*((i+1)%5 + 1);
                     })
@@ -132,20 +125,14 @@
             
             //drawing the labels
             series.selectAll("text")
-                 .data(function(d) { return d.pos; } )
+                 .data(getPosition)
                  .enter().append("text")
-                 .attr("x", function(d) {
-			   		return xScale(d[0]);
-			         })
-			     .attr("y", function(d) {
-			   		return yScale(d[1]);
-                    })
-                .text(function(d, i, j) {
-			   		return j + " - " + i + " : (" + d[0] + ", " + d[1] + ")";
-                    })
-                .attr("font-family", "sans-serif")
-			    .attr("font-size", "11px")
-			    .attr("fill", "black");
+                 .attr("x", getX)
+			     .attr("y", getY)
+                 .text(pointLabel)
+                 .attr("font-family", "sans-serif")
+			     .attr("font-size", "11px")
+			     .attr("fill", "black");
             
                
             
