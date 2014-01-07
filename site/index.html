@@ -156,18 +156,16 @@
                      .attr("y", getY)
                      .text(pointLabel)
                 
-                //removing lost users
-                series.selectAll("circle").exit()
-						.transition()
+                
+                
+                series.exit()
+                        .transition()
 						.duration(500)
-						.attr("cx", -xScale.rangeBand())
+						.attr("cx", w)
+                        .attr("x", w)
 						.remove();
                 
-                series.selectAll("text")
-                    .data(getPosition)
-                    .duration(500)
-				    .attr("x", -xScale.rangeBand())
-				    .remove();
+
                 
                 //Update X axis
 				svg.select(".x.axis")
@@ -319,7 +317,7 @@
                     }
                         
                     else if(buttonID == "remove"){
-                        user.shift();
+                        users.shift();
                         }
                
                 updateData(series);
