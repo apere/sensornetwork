@@ -51,6 +51,18 @@
                     color: "#ba00ff",
                     pos:  [[45, 30], [35, 20], [40, 15], [50, 25]]
                   },
+                {
+                    user: 4,
+                    color: "#d6203c",
+                    pos:  [[20, 145], [120, 110], [90, 105], [120, 130]]
+                  },
+                
+                 {
+                    user: 5,
+                    color: "#d6500c",
+                    pos:  [[50, 50], [90, 20], [10, 95], [60, 90]]
+                  }
+                
                 
             ];
             
@@ -82,11 +94,19 @@
 
 
             var xScale = d3.scale.linear()
-                     .domain([0, d3.max(users, function(d, i) { return d.pos[i][0] })])
+                     .domain([0, d3.max(users, function(d, i) {  
+                         return d3.max(d.pos, function(d, i){ 
+                             return d[0]
+                         }) 
+                     })])
                      .range([padding, w - padding*2]);
             
             var yScale = d3.scale.linear()
-                     .domain([0, d3.max(users, function(d, i) { return d.pos[i][1]; })])
+                     .domain([0, d3.max(users, function(d, i) {  
+                         return d3.max(d.pos, function(d, i){ 
+                             return d[1]
+                         }) 
+                     })])
                      .range([h - padding, padding]);
             
             var rScale = d3.scale.linear()
