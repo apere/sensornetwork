@@ -5,20 +5,20 @@
         <title>D3 Test</title>
         <script type="text/javascript" src="d3/d3.v3.js"></script>
         <style type="text/css">
-		
-			.axis path,
-			.axis line {
-				fill: none;
-				stroke: black;
-				shape-rendering: crispEdges;
-			}
-			
-			.axis text {
-				font-family: sans-serif;
-				font-size: 11px;
-			}
-		
-		</style>
+                
+                        .axis path,
+                        .axis line {
+                                fill: none;
+                                stroke: black;
+                                shape-rendering: crispEdges;
+                        }
+                        
+                        .axis text {
+                                font-family: sans-serif;
+                                font-size: 11px;
+                        }
+                
+                </style>
     </head>
     <body>
     <button>update</button>    
@@ -91,6 +91,23 @@
             
             
             var updateData = function(d){
+                 series = series.data(users, key);
+                
+                xScale.domain([0, d3.max(users, function(d, i) {  
+                         return d3.max(d.pos, function(d, i){ 
+                             return d[0]
+                         }) 
+                     })])
+                     .range([padding, w - padding*2]);
+            
+                yScale.domain([0, d3.max(users, function(d, i) {  
+                         return d3.max(d.pos, function(d, i){ 
+                             return d[1]
+                         }) 
+                     })])
+                     .range([h - padding, padding]);
+                
+                
                 //updating the data
                 series.selectAll("circle")
                      .data(function(d){
@@ -115,6 +132,18 @@
                      .attr("x", getX)
                      .attr("y", getY)
                      .text(pointLabel)
+                
+                //Update X axis
+				svg.select(".x.axis")
+				    .transition()
+				    .duration(1000)
+				.call(xAxis);
+					
+				//Update Y axis
+				svg.select(".y.axis")
+				    .transition()
+				    .duration(1000)
+				    .call(yAxis);
             };
             
 
@@ -140,28 +169,27 @@
                      .range([2, 5]);
             
             //Define X axis
-			var xAxis = d3.svg.axis()
-							  .scale(xScale)
-							  .orient("bottom")
-							  .ticks(5);
+            var xAxis = d3.svg.axis()
+                        .scale(xScale)
+                        .orient("bottom")
+                        .ticks(5);
 
-			//Define Y axis
-			var yAxis = d3.svg.axis()
-							  .scale(yScale)
-							  .orient("left")
-							  .ticks(5);
-            
+            //Define Y axis
+            var yAxis = d3.svg.axis()
+                        .scale(yScale)
+                        .orient("left")
+                        .ticks(5);
             
             var svg = d3.select("body")
                         .append("svg")
                         .attr("width", w)
                         .attr("height", h);
             
-                        
+                      
             
             //getting all of the data points
             var series = svg.selectAll("series")
-                .data(users).enter().append("svg:g")
+                .data(users, key).enter().append("svg:g")
                 .attr("class", "series")
                 .style("fill", getColor);         
 
@@ -172,9 +200,9 @@
                  .transition()
                  .duration(1000)
                  .attr("cx", getX)
-			     .attr("cy", getY)
+                             .attr("cy", getY)
                 .attr("r", function(d, i) {
-			   		return rScale(d[0])*((i+1)%5 + 1);
+                                           return rScale(d[0])*((i+1)%5 + 1);
                     })
                 .style("opacity", function(d, i) {return (i+1)/4;});
             
@@ -183,22 +211,22 @@
                  .data(getPosition)
                  .enter().append("text")
                  .attr("x", getX)
-			     .attr("y", getY)
+                             .attr("y", getY)
                  .text(pointLabel)
                  .attr("font-family", "sans-serif")
-			     .attr("font-size", "11px")
-			     .attr("fill", "black");
+                             .attr("font-size", "11px")
+                             .attr("fill", "black");
             
 
-            //Create X axis
+			//Create X axis
 			svg.append("g")
-				.attr("class", "axis")
+				.attr("class", "x axis")
 				.attr("transform", "translate(0," + (h - padding) + ")")
 				.call(xAxis);
 			
 			//Create Y axis
 			svg.append("g")
-				.attr("class", "axis")
+				.attr("class", "y axis")
 				.attr("transform", "translate(" + padding + ",0)")
 				.call(yAxis);
             
@@ -226,7 +254,7 @@
                 {
                     user: 3,
                     color: "#ba00ff",
-                    pos:   [[20, 145], [120, 110], [90, 105], [120, 130]] 
+                    pos:   [[20, 145], [120, 110], [90, 105], [320, 330]] 
                   },
                 {
                     user: 4,
@@ -241,7 +269,7 @@
                   }
             ];
                 
-                series.data(users);
+
                 updateData(series);
                      
                     
