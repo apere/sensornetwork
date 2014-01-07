@@ -1,3 +1,29 @@
+<!-- 
+Adam M. Pere
+Involution Studios
+January 2014
+
+This is a scatter plot to create the framework for my person tracking application.
+The data is broken up by users (or people in the studio). Each user has 4 points (this may change)
+that represent their current location (the largest most opaque dot) and thier last 3 previous locations
+(the smaller more opaque dots).
+
+Project: InvoLive
+This is a 2d birds eye view of the studio (bare bones simply to illustrate the idea).
+
+Each set of colored dots represents a person and their motion path. The largest and most opaque dot is the current location of the person and the smaller less opaque dots are their past locations (aka their walking/motion path). 
+
+The further apart the dots are, the faster he/she is moving. The closer they are, the slower he/or she is moving. 
+
+Once I get the tracking working, I plan on adding more detail (furniture and other fun) to the map and making it look nicer. 
+
+Other future plans:
+- To get live video with data overlaid
+- Collect studio data and map overtime/compare dates
+- To get tracking in multiple rooms
+- To identify people (are they in the studio: fitbit, phone connected to wifi, computer connected to network, etc. Hot Zones (aka people's working areas)
+- Finding other possible data to collect: heat across the room, etc.
+-->
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -92,8 +118,7 @@
             
             
             var updateData = function(d){
-                series = series.data(users,  key);
-
+            //updating the scales
                 xScale.domain([0, d3.max(users, function(d, i) {  
                          return d3.max(d.pos, function(d, i){ 
                              return d[0]
@@ -108,6 +133,9 @@
                      })])
                      .range([h - padding, padding]);
                 
+                series = series.data(users,  key);
+                
+            //New elements
                 //Adding a new user
                 series.enter().append("svg:g")
                         .attr("class", "series")
@@ -132,6 +160,7 @@
                      .attr("font-size", "11px")
                      .attr("fill", "black");
                 
+            //Updating current elements
                 //updating all of the circles
                 series.selectAll("circle")
                      .data(function(d){
@@ -155,17 +184,14 @@
                      .attr("x", getX)
                      .attr("y", getY)
                      .text(pointLabel)
-                
-                
-                
+                  
+            //Removing all elements associated with data that no longer exists
                 series.exit()
                         .transition()
-						.duration(500)
+						.duration(100)
 						.attr("cx", w)
                         .attr("x", w)
 						.remove();
-                
-
                 
                 //Update X axis
 				svg.select(".x.axis")
@@ -265,64 +291,43 @@
 				.call(yAxis);
             
             
+            //Actions for clicking button
             d3.selectAll("button").on("click", function(d){
               
                var buttonID = d3.select(this).attr("class");
                 
                 if( buttonID == "add") {
-                        console.log("add new button click");
-                        
                         users.push({ 
                             user: 5,
                             color: "#20bad6",
                             pos:  [[70, 40], [75,34], [99, 80], [300, 90]]
-                        });
-                            
-                        }
-                
-                else if(buttonID == "update"){
-                    
-                    
-                    
+                        });   
+                                      
+                }else if(buttonID == "update") {
                     users = [
-                      {
-                        user: 0,
+                      { user: 0,
                         color: "#149314",
                         pos: [[60, 110], [70, 120], [80, 135], [90, 155]]   
                       },
-                     {
-                        user: 1,
+                     {  user: 1,
                         color: "#3d3dc3",
-                        pos:  [[90, 140], [100, 160], [120, 205], [110, 210]]
-                      },
-                    {
-                        user: 2,
+                        pos:  [[90, 140], [100, 160], [120, 205], [110, 210]] },
+                     {  user: 2,
                         color: "#d6203c",
-                        pos:  [[20, 70], [30, 80], [40, 85], [50, 95]] 
-                      },
-                    
-                    {
-                        user: 3,
+                        pos:  [[20, 70], [30, 80], [40, 85], [50, 95]] },
+                     {  user: 3,
                         color: "#ba00ff",
-                        pos:   [[20, 145], [120, 110], [90, 105], [320, 330]] 
-                      },
-                    {
-                        user: 4,
+                        pos:   [[20, 145], [120, 110], [90, 105], [320, 330]] },
+                     {  user: 4,
                         color: "#d6203c",
-                        pos:  [[50, 50], [0,0], [10, 95], [60, 300]]
-                      },
+                        pos:  [[50, 50], [0,0], [10, 95], [60, 300]] },
                     ];
-                    
-    
+
+                }else if(buttonID == "remove") {
+                    users.shift();
                     }
-                        
-                    else if(buttonID == "remove"){
-                        users.shift();
-                        }
                
                 updateData(series);
-                
-                    
                 return d;
             });
             
