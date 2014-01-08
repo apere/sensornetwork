@@ -351,9 +351,13 @@ Other future plans:
                     users.shift();
                 
                 }else if(buttonID == "updateOne") {
-                    var temp = users[0].pos.pop();
-                    users[0].pastPos.unshift(temp);
-                    users[0].pos.unshift([100,200]);
+                    var index = Math.floor(Math.random()*10);
+                    console.log(index);
+                    if(index >= users.length)
+                    {index = 10 - index -1;}
+                    var temp = users[index].pos.pop();
+                    users[index].pastPos.unshift(temp);
+                    users[index].pos.unshift([Math.floor(Math.random()*100), Math.floor(Math.random()*100)]);
                     
                     }
                
