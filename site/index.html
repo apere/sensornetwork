@@ -48,7 +48,8 @@ Other future plans:
         
     </head>
     <body>
-    <button type ="button" id="update" class ="update" name="update">Update All</button>   
+    <button type ="button" id="update" class ="update" name="update">Update All</button>
+    <button type ="button" id="updateOne" class ="updateOne" name="updateOne">Update One</button>    
     <button type ="button" id="add" class ="add" name="add">Add New</button> 
     <button type ="button" id="remove" class ="remove" name="remove">Remove</button>
      
@@ -96,11 +97,18 @@ Other future plans:
                   }
             ];
             
-            var updateUser = function(d){
+            var animate = function(){                
+                var circ = svg.selectAll("#circle0")
+                            .transition()
+                            .duration(1000)
+                            .attr("r", 20)
+                            .style("stroke-width", 2);
                 
-                
-            }
-            
+                circ.transition()
+                    .duration(1000)
+                    .attr("r", radiusAnimate)
+                    .style("stroke-width", 1);  
+            };
             
             var key = function(d){
                 return d.user;
@@ -127,7 +135,11 @@ Other future plans:
             };
             
             var radius = function(d,i){
-                return rScale(((1/(i+1))*10+ 1));
+                return rScale(((1/(i+1))*10));
+            }
+            
+            var radiusAnimate = function(d,i){
+                return rScale(((1/(1))*10));
             }
             
             var opact = function(d, i) {
@@ -162,9 +174,9 @@ Other future plans:
                 series.selectAll("circles").data(getPosition)
                         .enter()
                         .append("circle")
+                        .attr("id", function(d, i){return "circle" + i})
                         .attr("cx", 0)
-                        .attr("cy", 0)
-                        .style("stroke", "#FFFFFF");;
+                        .attr("cy", 0);
                 
                 //adding new labels
                 series.selectAll("text")
@@ -268,28 +280,29 @@ Other future plans:
                 .style("fill", getColor);
                 
 
-            //drawing the circles
+            //Adding the circles
             var circles = series.selectAll("circle")
                  .data(getPosition)
                  .enter().append("circle")
                  .transition()
                  .duration(1000)
+                 .attr("id", function(d, i){return "circle" + i})
                  .attr("cx", getX)
-                             .attr("cy", getY)
-                .attr("r", radius)
-                .style("opacity", opact)
-                .style("stroke", "#FFFFFF");
+                 .attr("cy", getY)
+                 .attr("r", radius)
+                 .style("opacity", opact)
+                 .style("stroke", "#d4d1d1");
             
             //drawing the labels
             series.selectAll("text")
                  .data(getPosition)
                  .enter().append("text")
                  .attr("x", getX)
-                             .attr("y", getY)
+                 .attr("y", getY)
                  .text(pointLabel)
                  .attr("font-family", "sans-serif")
-                             .attr("font-size", "11px")
-                             .attr("fill", "black");
+                 .attr("font-size", "11px")
+                 .attr("fill", "black");
             
 
 			//Create X axis
@@ -314,26 +327,32 @@ Other future plans:
                         users.push({ 
                             user: 5,
                             color: "#20bad6",
-                            pos:  [[70, 40], [75,34], [99, 80], [300, 90]]
+                            pos:  [[70, 40], [75,34], [99, 80]],
+                            pastPos: []
                         });   
                                       
                 }else if(buttonID == "update") {
-                    
-                    
                     users[0].pos = [[60, 110], [70, 120], [80, 135], [90, 155]] ;
                     users[1].pos = [[90, 140], [100, 160], [120, 205], [110, 210]];
                     users[2].pos = [[20, 70], [30, 80], [40, 85], [50, 95]];
                     users[3].pos = [[20, 145], [120, 110], [90, 105], [320, 330]];
                     users[4].pos = [[50, 50], [0,0], [10, 95], [60, 300]];
-                   
 
                 }else if(buttonID == "remove") {
                     users.shift();
+                
+                }else if(buttonID == "updateOne") {
+                    var temp = users[0].pos.pop();
+                    users[0].pastPos.unshift(temp);
+                    users[0].pos.unshift([100,200]);
+                    
                     }
                
                 updateData(series);
                 return d;
             });
+            
+            //setInterval(animate, 2500);
             
         </script>
         
