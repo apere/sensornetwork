@@ -162,7 +162,7 @@ Other future plans:
                      })])
                      .range([h - padding, padding]);
                 
-                series = series.data(users, key);
+                series = svg.selectAll("g.series").data(users, key);
                 
             //New elements
                 //Adding a new user
@@ -194,7 +194,8 @@ Other future plans:
                 //updating all of the circles
                 series.selectAll("circle")
                      .data(function(d){
-                        return d.pos;  
+                        return d.pos;
+                        console.log("updating user: " + d.user + " at (" + d.pos[0] + ", " + d.pos[1] + ")"); 
                      })
                      .transition()
                      .duration(1000)
@@ -214,23 +215,25 @@ Other future plans:
                   
             //Removing all elements associated with data that no longer exists
                 series.exit()
-                        .transition()
-                                                .duration(100)
-                                                .attr("cx", w)
-                        .attr("x", w)
-                                                .remove();
+                     .transition()
+                     .duration(100)
+                     .attr("cx", w)
+                     .attr("x", w)
+                     .remove();
                 
                 //Update X axis
-                                svg.select(".x.axis")
-                                    .transition()
-                                    .duration(1000)
-                                .call(xAxis);
+                svg.select(".x.axis")
+                   .transition()
+                   .duration(1000)
+                   .call(xAxis);
                                         
-                                //Update Y axis
-                                svg.select(".y.axis")
-                                    .transition()
-                                    .duration(1000)
-                                    .call(yAxis);
+                 //Update Y axis
+                 svg.select(".y.axis")
+                    .transition()
+                    .duration(1000)
+                    .call(yAxis);
+                
+                
             };
             
 
