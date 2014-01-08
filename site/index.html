@@ -193,16 +193,13 @@ Other future plans:
             //Updating current elements
                 //updating all of the circles
                 series.selectAll("circle")
-                     .data(function(d){
-                        return d.pos;
-                        console.log("updating user: " + d.user + " at (" + d.pos[0] + ", " + d.pos[1] + ")"); 
-                     })
+                     .data(getPosition)
                      .transition()
                      .duration(1000)
                      .attr("cx", getX)
                      .attr("cy", getY)
-                    .attr("r", radius)
-                    .style("opacity", opact);
+                     .attr("r", radius)
+                     .style("opacity", opact);
 
                 //updating all of the labels
                 series.selectAll("text")
@@ -330,18 +327,25 @@ Other future plans:
                 
                 if( buttonID == "add") {
                         users.push({ 
-                            user: 5,
+                            user: users.length,
                             color: "#20bad6",
                             pos:  [[70, 40], [75,34], [99, 80]],
                             pastPos: []
                         });   
                                       
                 }else if(buttonID == "update") {
-                    users[0].pos = [[60, 110], [70, 120], [80, 135], [90, 155]] ;
-                    users[1].pos = [[90, 140], [100, 160], [120, 205], [110, 210]];
-                    users[2].pos = [[20, 70], [30, 80], [40, 85], [50, 95]];
-                    users[3].pos = [[20, 145], [120, 110], [90, 105], [320, 330]];
-                    users[4].pos = [[50, 50], [0,0], [10, 95], [60, 300]];
+                    var len = users.length;
+                    
+                    if(len >= 1)
+                    {users[0].pos = [[60, 110], [70, 120], [80, 135], [90, 155]] ;}
+                    if(len >= 2)
+                    {users[1].pos = [[90, 140], [100, 160], [120, 205], [110, 210]];}
+                    if(len >= 3)
+                    {users[2].pos = [[20, 70], [30, 80], [40, 85], [50, 95]];}
+                    if(len >= 4)
+                    {users[3].pos = [[20, 145], [120, 110], [90, 105], [320, 330]];}
+                    if(len >= 5)
+                    {users[4].pos = [[50, 50], [0,0], [10, 95], [60, 300]];}
 
                 }else if(buttonID == "remove") {
                     users.shift();
