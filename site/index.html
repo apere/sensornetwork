@@ -98,7 +98,7 @@ Other future plans:
             ];
             
             var animate = function(){                
-                var circ = svg.selectAll("#circle0")
+                var circ = svg.selectAll("circle")
                             .transition()
                             .duration(1000)
                             .attr("r", 20)
@@ -139,7 +139,7 @@ Other future plans:
             }
             
             var radiusAnimate = function(d,i){
-                return rScale(((1/(1))*10));
+                return rScale(((1/(1))*5));
             }
             
             var opact = function(d, i) {
@@ -162,16 +162,17 @@ Other future plans:
                      })])
                      .range([h - padding, padding]);
                 
-                series = series.data(users,  key);
+                series = series.data(users, key);
                 
             //New elements
                 //Adding a new user
                 series.enter().append("svg:g")
                         .attr("class", "series")
-                        .style("fill", getColor);
+                        .style("fill", getColor)
+                        .attr("id", function(d){return "user" + d.user});
                         
                 //adding new circles
-                series.selectAll("circles").data(getPosition)
+                series.selectAll("circle").data(getPosition)
                         .enter()
                         .append("circle")
                         .attr("id", function(d, i){return "circle" + i})
@@ -214,22 +215,22 @@ Other future plans:
             //Removing all elements associated with data that no longer exists
                 series.exit()
                         .transition()
-						.duration(100)
-						.attr("cx", w)
+                                                .duration(100)
+                                                .attr("cx", w)
                         .attr("x", w)
-						.remove();
+                                                .remove();
                 
                 //Update X axis
-				svg.select(".x.axis")
-				    .transition()
-				    .duration(1000)
-				.call(xAxis);
-					
-				//Update Y axis
-				svg.select(".y.axis")
-				    .transition()
-				    .duration(1000)
-				    .call(yAxis);
+                                svg.select(".x.axis")
+                                    .transition()
+                                    .duration(1000)
+                                .call(xAxis);
+                                        
+                                //Update Y axis
+                                svg.select(".y.axis")
+                                    .transition()
+                                    .duration(1000)
+                                    .call(yAxis);
             };
             
 
@@ -277,6 +278,7 @@ Other future plans:
             var series = svg.selectAll("series")
                 .data(users, key).enter().append("svg:g")
                 .attr("class", "series")
+                .attr("id", function(d){return "user" + d.user})
                 .style("fill", getColor);
                 
 
@@ -305,17 +307,17 @@ Other future plans:
                  .attr("fill", "black");
             
 
-			//Create X axis
-			svg.append("g")
-				.attr("class", "x axis")
-				.attr("transform", "translate(0," + (h - padding) + ")")
-				.call(xAxis);
-			
-			//Create Y axis
-			svg.append("g")
-				.attr("class", "y axis")
-				.attr("transform", "translate(" + padding + ",0)")
-				.call(yAxis);
+                        //Create X axis
+                        svg.append("g")
+                                .attr("class", "x axis")
+                                .attr("transform", "translate(0," + (h - padding) + ")")
+                                .call(xAxis);
+                        
+                        //Create Y axis
+                        svg.append("g")
+                                .attr("class", "y axis")
+                                .attr("transform", "translate(" + padding + ",0)")
+                                .call(yAxis);
             
             
             //Actions for clicking button
@@ -352,7 +354,7 @@ Other future plans:
                 return d;
             });
             
-            //setInterval(animate, 2500);
+            setInterval(animate, 2500);
             
         </script>
         
