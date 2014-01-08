@@ -66,30 +66,40 @@ Other future plans:
                   {
                     user: 0,
                     color: "#149314",
-                    pos:  [[20, 70], [30, 80], [40, 85], [50, 95]]
+                    pos:  [[20, 70], [30, 80], [40, 85], [50, 95]],
+                    pastPos:[]  
                   },
                  {
                     user: 1,
                     color: "#3d3dc3",
-                    pos:  [[60, 110], [70, 120], [80, 135], [90, 155]]
+                    pos:  [[60, 110], [70, 120], [80, 135], [90, 155]],
+                    pastPos:[] 
                   },
                 {
                     user: 2,
                     color: "#d6203c",
-                    pos:  [[90, 140], [100, 160], [120, 205], [110, 210]]
+                    pos:  [[90, 140], [100, 160], [120, 205], [110, 210]],
+                    pastPos:[] 
                   },
                 
                 {
                     user: 3,
                     color: "#ba00ff",
-                    pos:  [[45, 30], [35, 20], [40, 15], [50, 25]]
+                    pos:  [[45, 30], [35, 20], [40, 15], [50, 25]],
+                    pastPos:[] 
                   },
                 {
                     user: 4,
                     color: "#d6203c",
-                    pos:  [[20, 145], [120, 110], [90, 105], [120, 130]]
+                    pos:  [[20, 145], [120, 110], [90, 105], [120, 130]],
+                    pastPos:[] 
                   }
             ];
+            
+            var updateUser = function(d){
+                
+                
+            }
             
             
             var key = function(d){
@@ -116,6 +126,13 @@ Other future plans:
                 return j + " - " + i + " : (" + d[0] + ", " + d[1] + ")";
             };
             
+            var radius = function(d,i){
+                return rScale(((1/(i+1))*10+ 1));
+            }
+            
+            var opact = function(d, i) {
+                return 1/(i+1) *1.5;
+            }
             
             var updateData = function(d){
             //updating the scales
@@ -147,7 +164,7 @@ Other future plans:
                         .append("circle")
                         .attr("cx", 0)
                         .attr("cy", 0)
-                        .text(pointLabel);
+                        .style("stroke", "#FFFFFF");;
                 
                 //adding new labels
                 series.selectAll("text")
@@ -170,11 +187,8 @@ Other future plans:
                      .duration(1000)
                      .attr("cx", getX)
                      .attr("cy", getY)
-                    .attr("r", function(d, i) {
-                        console.log("updating to " + d[0] + ", " + d[1]);
-                        return rScale(d[0])*((i+1)%5 + 1);
-                        })
-                    .style("opacity", function(d, i) {return (i+1)/4;});
+                    .attr("r", radius)
+                    .style("opacity", opact);
 
                 //updating all of the labels
                 series.selectAll("text")
@@ -225,8 +239,8 @@ Other future plans:
                      .range([h - padding, padding]);
             
             var rScale = d3.scale.linear()
-                     .domain([0, 300])
-                     .range([2, 5]);
+                     .domain([1,4])
+                     .range([3, 10]);
             
             //Define X axis
             var xAxis = d3.svg.axis()
@@ -251,7 +265,8 @@ Other future plans:
             var series = svg.selectAll("series")
                 .data(users, key).enter().append("svg:g")
                 .attr("class", "series")
-                .style("fill", getColor);         
+                .style("fill", getColor);
+                
 
             //drawing the circles
             var circles = series.selectAll("circle")
@@ -261,10 +276,9 @@ Other future plans:
                  .duration(1000)
                  .attr("cx", getX)
                              .attr("cy", getY)
-                .attr("r", function(d, i) {
-                                           return rScale(d[0])*((i+1)%5 + 1);
-                    })
-                .style("opacity", function(d, i) {return (i+1)/4;});
+                .attr("r", radius)
+                .style("opacity", opact)
+                .style("stroke", "#FFFFFF");
             
             //drawing the labels
             series.selectAll("text")
@@ -304,24 +318,14 @@ Other future plans:
                         });   
                                       
                 }else if(buttonID == "update") {
-                    users = [
-                      { user: 0,
-                        color: "#149314",
-                        pos: [[60, 110], [70, 120], [80, 135], [90, 155]]   
-                      },
-                     {  user: 1,
-                        color: "#3d3dc3",
-                        pos:  [[90, 140], [100, 160], [120, 205], [110, 210]] },
-                     {  user: 2,
-                        color: "#d6203c",
-                        pos:  [[20, 70], [30, 80], [40, 85], [50, 95]] },
-                     {  user: 3,
-                        color: "#ba00ff",
-                        pos:   [[20, 145], [120, 110], [90, 105], [320, 330]] },
-                     {  user: 4,
-                        color: "#d6203c",
-                        pos:  [[50, 50], [0,0], [10, 95], [60, 300]] },
-                    ];
+                    
+                    
+                    users[0].pos = [[60, 110], [70, 120], [80, 135], [90, 155]] ;
+                    users[1].pos = [[90, 140], [100, 160], [120, 205], [110, 210]];
+                    users[2].pos = [[20, 70], [30, 80], [40, 85], [50, 95]];
+                    users[3].pos = [[20, 145], [120, 110], [90, 105], [320, 330]];
+                    users[4].pos = [[50, 50], [0,0], [10, 95], [60, 300]];
+                   
 
                 }else if(buttonID == "remove") {
                     users.shift();
