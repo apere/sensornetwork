@@ -58,6 +58,7 @@ Other future plans:
         </br>
         New Location: ( <input type = "text" size = "5" name = "x" id = "newLocX" > , <input type = "text" size = "5" name = "y" id = "newLocY"> ) </br>
         <button type = "button" id = "newLoc" class = "newLoc" name = "newLoc">Enter</button>
+        <button type = "button" id = "move" class = "move" name = "Move">Move Forward</button>
         
         
     </form>
@@ -81,7 +82,7 @@ Other future plans:
                   {
                     user: 0,
                     color: "#149314",
-                    pos:  [[20, 70], [30, 80], [40, 85], [50, 95]],
+                    pos:  [ [80, 85],[60, 75],[45, 60],[30, 35]],
                     pastPos:[]  
                   },
                  {
@@ -93,7 +94,7 @@ Other future plans:
                 {
                     user: 2,
                     color: "#d6203c",
-                    pos:  [[90, 140], [100, 160], [120, 205], [110, 210]],
+                    pos:  [[120, 140], [130, 160], [140, 185], [150, 200]],
                     pastPos:[] 
                   },
                 
@@ -102,26 +103,29 @@ Other future plans:
                     color: "#ba00ff",
                     pos:  [[45, 30], [35, 20], [40, 15], [50, 25]],
                     pastPos:[] 
-                  },
-                {
-                    user: 4,
-                    color: "#d6203c",
-                    pos:  [[20, 145], [120, 110], [90, 105], [120, 130]],
-                    pastPos:[] 
                   }
+//                {
+//                    user: 4,
+//                    color: "#d6203c",
+//                    pos:  [[20, 145], [120, 110], [90, 105], [120, 130]],
+//                    pastPos:[] 
+//                  }
             ];
             
             var animate = function(){                
                 var circ = svg.selectAll("circle")
                             .transition()
-                            .duration(1000)
-                            .attr("r", 20)
+                            .duration(function(d,i){return (500 + (500 / (i%4 + 1)));})
+                            .attr("r", function(d,i){return (1/((i%4) + 1))*20;})
                             .style("stroke-width", 2);
                 
                 circ.transition()
                     .duration(1000)
                     .attr("r", radiusAnimate)
                     .style("stroke-width", 1);  
+                
+                var l = users.length;
+                
             };
             
             var key = function(d){
@@ -153,12 +157,27 @@ Other future plans:
             }
             
             var radiusAnimate = function(d,i){
-                return rScale(((1/(1))*5));
+                return radius(d, i%4);
             }
             
             var opact = function(d, i) {
                 return 1/(i+1) *1.5;
             }
+            
+            var randomMove = function(d){
+             var temp = users[d].pos;
+                        temp = temp[0];
+           
+                        if(users[d].pos.length >= 4){
+                            var temp2 = users[d].pos.pop();
+                            users[d].pastPos.unshift(temp2);
+                        }
+                        
+                        
+//                        console.log("user " + d + "old: (" + temp[0] + ", " + temp[1] + ")" );
+                        users[d].pos.unshift([temp[0] + Math.floor(Math.random()*40) - 10, temp[1] + Math.floor(Math.random()*40) - 10]);
+
+            };
             
             var updateData = function(d){
 //            //updating the scales
@@ -222,14 +241,14 @@ Other future plans:
                      .attr("r", radius)
                      .style("opacity", opact);
 
-                //updating all of the labels
-                series.selectAll("text")
-                     .data(getPosition)
-                     .transition()
-                     .duration(1000)
-                     .attr("x", getX)
-                     .attr("y", getY)
-                     .text(pointLabel)
+//                //updating all of the labels
+//                series.selectAll("text")
+//                     .data(getPosition)
+//                     .transition()
+//                     .duration(1000)
+//                     .attr("x", getX)
+//                     .attr("y", getY)
+//                     .text(pointLabel)
                   
             //Removing all elements associated with data that no longer exists
                 series.exit()
@@ -328,16 +347,16 @@ Other future plans:
                  .style("opacity", opact)
                  .style("stroke", "#d4d1d1");
             
-            //drawing the labels
-            series.selectAll("text")
-                 .data(getPosition)
-                 .enter().append("text")
-                 .attr("x", getX)
-                 .attr("y", getY)
-                 .text(pointLabel)
-                 .attr("font-family", "sans-serif")
-                 .attr("font-size", "11px")
-                 .attr("fill", "black");
+//            //drawing the labels
+//            series.selectAll("text")
+//                 .data(getPosition)
+//                 .enter().append("text")
+//                 .attr("x", getX)
+//                 .attr("y", getY)
+//                 .text(pointLabel)
+//                 .attr("font-family", "sans-serif")
+//                 .attr("font-size", "11px")
+//                 .attr("fill", "black");
             
 
                         //Create X axis
@@ -352,11 +371,12 @@ Other future plans:
                                 .attr("transform", "translate(" + padding + ",0)")
                                 .call(yAxis);
             
-            var select = d3.select("body").select("form").select("select").selectAll("userDrop").data(users,key)
+             var select = d3.select("body").select("form").select("select").selectAll("userDrop").data(users,key)
                             .enter()
                             .append("option")
                             .attr("value", function(d){return d.user;})
-                            .text(function(d){ return "user " + d.user;});
+                            .text(function(d){ return "user " + d.user;})
+                            .style("color", function(d){ console.log(d.color); return d.color;});
             
             
             //Actions for clicking button
@@ -435,6 +455,13 @@ Other future plans:
                         
                         
                         }
+                    }else if(buttonID == "move") {
+                        var t= document.getElementById("drop");
+                        var tV = t.options[t.selectedIndex].value;
+                        
+                        randomMove(tV);
+                        
+                        
                     }
                
                 updateData(series);
