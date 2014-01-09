@@ -147,20 +147,20 @@ Other future plans:
             }
             
             var updateData = function(d){
-            //updating the scales
-                xScale.domain([0, d3.max(users, function(d, i) {  
-                         return d3.max(d.pos, function(d, i){ 
-                             return d[0]
-                         }) 
-                     })])
-                     .range([padding, w - padding*2]);
-            
-                yScale.domain([0, d3.max(users, function(d, i) {  
-                         return d3.max(d.pos, function(d, i){ 
-                             return d[1]
-                         }) 
-                     })])
-                     .range([h - padding, padding]);
+//            //updating the scales
+//                xScale.domain([0, d3.max(users, function(d, i) {  
+//                         return d3.max(d.pos, function(d, i){ 
+//                             return d[0]
+//                         }) 
+//                     })])
+//                     .range([padding, w - padding*2]);
+//            
+//                yScale.domain([0, d3.max(users, function(d, i) {  
+//                         return d3.max(d.pos, function(d, i){ 
+//                             return d[1]
+//                         }) 
+//                     })])
+//                     .range([h - padding, padding]);
                 
                 series = svg.selectAll("g.series").data(users, key);
                 
@@ -218,37 +218,46 @@ Other future plans:
                      .attr("x", w)
                      .remove();
                 
-                //Update X axis
-                svg.select(".x.axis")
-                   .transition()
-                   .duration(1000)
-                   .call(xAxis);
-                                        
-                 //Update Y axis
-                 svg.select(".y.axis")
-                    .transition()
-                    .duration(1000)
-                    .call(yAxis);
+//                //Update X axis
+//                svg.select(".x.axis")
+//                   .transition()
+//                   .duration(1000)
+//                   .call(xAxis);
+//                                        
+//                 //Update Y axis
+//                 svg.select(".y.axis")
+//                    .transition()
+//                    .duration(1000)
+//                    .call(yAxis);
                 
                 
             };
             
 
+//            //calculating the scale using the maximum position location values
+//            var xScale = d3.scale.linear()
+//                     .domain([0, d3.max(users, function(d, i) {  
+//                         return d3.max(d.pos, function(d, i){ 
+//                             return d[0]
+//                         }) 
+//                     })])
+//                     .range([padding, w - padding*2]);
+//            
+//            var yScale = d3.scale.linear()
+//                     .domain([0, d3.max(users, function(d, i) {  
+//                         return d3.max(d.pos, function(d, i){ 
+//                             return d[1]
+//                         }) 
+//                     })])
+//                     .range([h - padding, padding]);
+            
             //calculating the scale using the maximum position location values
             var xScale = d3.scale.linear()
-                     .domain([0, d3.max(users, function(d, i) {  
-                         return d3.max(d.pos, function(d, i){ 
-                             return d[0]
-                         }) 
-                     })])
+                     .domain([0, 350])
                      .range([padding, w - padding*2]);
             
             var yScale = d3.scale.linear()
-                     .domain([0, d3.max(users, function(d, i) {  
-                         return d3.max(d.pos, function(d, i){ 
-                             return d[1]
-                         }) 
-                     })])
+                     .domain([0, 350])
                      .range([h - padding, padding]);
             
             var rScale = d3.scale.linear()
