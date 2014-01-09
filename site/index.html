@@ -48,6 +48,20 @@ Other future plans:
         
     </head>
     <body>
+        
+    <form class = "updateForm" >        
+        Choose the user:
+        <select class = "userDrop" id = "drop">
+              <option value = "none">Select One</option>
+             <option value = "newUser">New User</option>
+        </select>
+        </br>
+        New Location: ( <input type = "text" size = "5" name = "x" id = "newLocX" > , <input type = "text" size = "5" name = "y" id = "newLocY"> ) </br>
+        <button type = "button" id = "newLoc" class = "newLoc" name = "newLoc">Enter</button>
+        
+        
+    </form>
+        
     <button type ="button" id="update" class ="update" name="update">Update All</button>
     <button type ="button" id="updateOne" class ="updateOne" name="updateOne">Update One</button>    
     <button type ="button" id="add" class ="add" name="add">Add New</button> 
@@ -190,6 +204,13 @@ Other future plans:
                      .attr("font-size", "11px")
                      .attr("fill", "black");
                 
+                select = select.data(users,key);
+                //adding new users to dropdown menue
+                      select.enter()
+                            .append("option")
+                            .attr("value", function(d){return d.user;})
+                            .text(function(d){ return "user " + d.user;});
+                
             //Updating current elements
                 //updating all of the circles
                 series.selectAll("circle")
@@ -217,6 +238,9 @@ Other future plans:
                      .attr("cx", w)
                      .attr("x", w)
                      .remove();
+                
+                //removing users from dropdown
+                select.exit().remove();
                 
 //                //Update X axis
 //                svg.select(".x.axis")
@@ -328,6 +352,12 @@ Other future plans:
                                 .attr("transform", "translate(" + padding + ",0)")
                                 .call(yAxis);
             
+            var select = d3.select("body").select("form").select("select").selectAll("userDrop").data(users,key)
+                            .enter()
+                            .append("option")
+                            .attr("value", function(d){return d.user;})
+                            .text(function(d){ return "user " + d.user;});
+            
             
             //Actions for clicking button
             d3.selectAll("button").on("click", function(d){
@@ -357,7 +387,15 @@ Other future plans:
                     {users[4].pos = [[50, 50], [0,0], [10, 95], [60, 300]];}
 
                 }else if(buttonID == "remove") {
-                    users.shift();
+                    var temp = document.getElementById("drop");
+                    var temp = temp.options[temp.selectedIndex].value;
+                    console.log("removing " + temp);
+                    
+                    if(temp == "none"){
+                        users.shift();}
+                    else{
+                        
+                    }
                 
                 }else if(buttonID == "updateOne") {
                     var index = Math.floor(Math.random()*10);
@@ -368,8 +406,39 @@ Other future plans:
                     users[index].pastPos.unshift(temp);
                     users[index].pos.unshift([Math.floor(Math.random()*100), Math.floor(Math.random()*100)]);
                     
+                }else if(buttonID == "newLoc") {
+                    var sel = document.getElementById("drop");
+                    var selValue = sel.options[sel.selectedIndex].value;
+                    var newLoc = [document.getElementById("newLocX").value, document.getElementById("newLocY").value];
+                    console.log("user: " + selValue + " at (" + newLoc[0] + ", " + newLoc[1] + ")");
+                    
+                    if(!(isNaN(newLoc[0])) && !(isNaN(newLoc[1]))){
+                        if(selValue == "newUser"){
+                            var col =  "hsl(" + Math.random() * 360 + ",100%,50%)";
+                                      
+                            console.log(col);          
+                            users.push({ 
+                                user: users.length,
+                                color: col,
+                                pos:  [newLoc],
+                                pastPos: []
+                            });
+                            
+                        }else{
+                            if(users[selValue].pos.length >= 4){
+                                var temp = users[selValue].pos.pop();
+                                users[selValue].pastPos.unshift(temp);
+                            }
+                            users[selValue].pos.unshift(newLoc);
+                            
+                        }
+                        
+                        
+                        }
                     }
                
+                updateData(series);
+                updateData(series);
                 updateData(series);
                 return d;
             });

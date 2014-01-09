@@ -16,7 +16,8 @@
         xmlhttp.send(null);
         
         var newd=xmlhttp.responseText;  //getting the text from the file
-       
+    
+    //update data   
         //data parsing (this is for a file that is literally just a list of numbers seperated by a comma
         var da=newd.split(‘,’);
         
@@ -24,6 +25,8 @@
             da[i] = parseInt(da[i], 10)
         }
         document.getElementById(‘test’).innerHTML=xmlhttp.responseText; //just to see what we're getting
+        
+    //update the visuals (simple function call to updateData(...), which I just now realized is poorly named)
         
         }
 
