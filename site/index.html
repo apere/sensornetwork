@@ -112,7 +112,10 @@ Other future plans:
 //                  }
             ];
             
-            var animate = function(){                
+            var animate = function(){
+                
+                 var l = users.length;
+                
                 var circ = svg.selectAll("circle")
                             .transition()
                             .duration(function(d,i){return (500 + (500 / (i%4 + 1)));})
@@ -123,9 +126,7 @@ Other future plans:
                     .duration(1000)
                     .attr("r", radiusAnimate)
                     .style("stroke-width", 1);  
-                
-                var l = users.length;
-                
+
             };
             
             var key = function(d){
@@ -165,6 +166,7 @@ Other future plans:
             }
             
             var randomMove = function(d){
+            console.log("random move called on " + d);
              var temp = users[d].pos;
                         temp = temp[0];
            
@@ -176,7 +178,7 @@ Other future plans:
                         
 //                        console.log("user " + d + "old: (" + temp[0] + ", " + temp[1] + ")" );
                         users[d].pos.unshift([temp[0] + Math.floor(Math.random()*40) - 10, temp[1] + Math.floor(Math.random()*40) - 10]);
-
+                        
             };
             
             var updateData = function(d){
