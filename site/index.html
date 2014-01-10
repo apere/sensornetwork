@@ -43,12 +43,24 @@ Other future plans:
                                 font-family: sans-serif;
                                 font-size: 11px;
                         }
+            
+            .col1{
+                float: left;
+                width: 300px;
+                margin: 10px;
+            }
+            .col2{
+                float: left;
+                width: 900px;
+                margin: 10px;
+            }
                 
                 </style>
         
     </head>
     <body>
-        
+    
+    <div class = "col1" id = "col1" >   
     <form class = "updateForm" >        
         Choose the user:
         <select class = "userDrop" id = "drop">
@@ -59,17 +71,17 @@ Other future plans:
         New Location: ( <input type = "text" size = "5" name = "x" id = "newLocX" > , <input type = "text" size = "5" name = "y" id = "newLocY"> ) </br>
         <button type = "button" id = "newLoc" class = "newLoc" name = "newLoc">Enter</button>
         <button type = "button" id = "move" class = "move" name = "Move">Move Forward</button>
-        
-        
-        
+
     </form>
         
-    <button type ="button" id="update" class ="update" name="update">Update All</button>
-    <button type ="button" id="updateOne" class ="updateOne" name="updateOne">Update One</button>    
+    </br> <button type ="button" id="update" class ="update" name="update">Update All</button>
+    <button type ="button" id="updateOne" class ="updateOne" name="updateOne">Update One</button></br>    
     <button type ="button" id="add" class ="add" name="add">Add New</button> 
-    <button type ="button" id="remove" class ="remove" name="remove">Remove</button>
+    <button type ="button" id="remove" class ="remove" name="remove">Remove</button> <br><br>
     <button type ="animate" id="animate" class ="animate" name="animate">Animate</button>
-     
+     </div> 
+    
+    <div class = "col2" id = "col2"> </div>
      
     
     
@@ -178,7 +190,6 @@ Other future plans:
             }
             
             var randomMove = function(d){
-            console.log("random move called on " + d);
              var temp = users[d].pos;
                         temp = temp[0];
            
@@ -343,12 +354,12 @@ Other future plans:
                         .orient("left")
                         .ticks(5);
             
-            var svg = d3.select("body")
+            var svg = d3.select("#col2")
                         .append("svg")
                         .attr("width", w)
                         .attr("height", h);
             
-                      
+            var past = "";          
             
             //getting all of the data points
             var series = svg.selectAll("series")
@@ -402,7 +413,7 @@ Other future plans:
                             .text(function(d){ return "user " + d.user;})
                             .style("color", function(d){ console.log(d.color); return d.color;});
             
-            var form = d3.select("body").selectAll("p").data(users,key)
+            var form = d3.select("#col1").selectAll("p").data(users,key)
                 .enter().append("p")
                 .attr("id", key)
                 .text(function(d){ return "user " + d.user;})
