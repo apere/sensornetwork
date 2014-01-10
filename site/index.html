@@ -68,6 +68,7 @@ Other future plans:
     <button type ="button" id="updateOne" class ="updateOne" name="updateOne">Update One</button>    
     <button type ="button" id="add" class ="add" name="add">Add New</button> 
     <button type ="button" id="remove" class ="remove" name="remove">Remove</button>
+    <button type ="animate" id="animate" class ="animate" name="animate">Animate</button>
      
      
     
@@ -78,6 +79,7 @@ Other future plans:
             var w = 800;
             var h = 800;
             var padding = 40;
+            var anim = false;
             
             var users = [
                   {
@@ -419,7 +421,7 @@ Other future plans:
                         users.push({ 
                             user: users.length,
                             color: col1,
-                            pos:  [[70, 40], [75,34], [99, 80]],
+                            pos:  [[70, 40], [75,34], [99, 80], [110, 85]],
                             pastPos: []
                         });   
                                       
@@ -447,6 +449,10 @@ Other future plans:
                     else{
                         
                     }   
+                    
+                    else if(buttonID == "animate") {
+                        anim = !anim;
+                    }
                 
                 }else if(buttonID == "updateOne") {
                     var index = Math.floor(Math.random()*10);
