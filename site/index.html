@@ -117,27 +117,26 @@ Other future plans:
             
             var animate = function(){
                 
-                 var l = users.length;
-                
-                for(i = 0; i < l; i++){
-                 randomMove(i);   
+                if(anim){
+                    var l = users.length;
+                    for(i = 0; i < l; i++){
+                     randomMove(i);   
+                    }
+                    
                 }
-                
-                
                 var circ = svg.selectAll("circle")
                             .transition()
                             .duration(function(d,i){return (500 + (500 / (i%4 + 1)));})
                             .attr("r", function(d,i){return (1/((i%4) + 1))*20;})
                             .style("stroke-width", 2);
                 
-                updateData(series);
                 
                 circ.transition()
                     .duration(1000)
                     .attr("r", radiusAnimate)
                     .style("stroke-width", 1);  
                 
-                
+                updateData(series);
                 
 
             };
@@ -450,11 +449,12 @@ Other future plans:
                         
                     }   
                     
-                    else if(buttonID == "animate") {
+                    
+                
+                }else if(buttonID == "animate") {
                         anim = !anim;
                     }
-                
-                }else if(buttonID == "updateOne") {
+                else if(buttonID == "updateOne") {
                     var index = Math.floor(Math.random()*10);
                     console.log(index);
                     if(index >= users.length)
