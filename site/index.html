@@ -136,17 +136,17 @@ Other future plans:
                     }
                     
                 }
-                var circ = svg.selectAll("circle")
-                            .transition()
-                            .duration(function(d,i){return (500 + (500 / (i%4 + 1)));})
-                            .attr("r", function(d,i){return (1/((i%4) + 1))*20;})
-                            .style("stroke-width", 2);
-                
-                
-                circ.transition()
-                    .duration(1000)
-                    .attr("r", radiusAnimate)
-                    .style("stroke-width", 1);  
+//                var circ = svg.selectAll("circle")
+//                            .transition()
+//                            .duration(function(d,i){return (500 + (500 / (i%4 + 1)));})
+//                            .attr("r", function(d,i){return (1/((i%4) + 1))*20;})
+//                            .style("stroke-width", 2);
+//                
+//                
+//                circ.transition()
+//                    .duration(1000)
+//                    .attr("r", radiusAnimate)
+//                    .style("stroke-width", 1);  
                 
                 updateData(series);
                 
@@ -188,6 +188,33 @@ Other future plans:
             var opact = function(d, i) {
                 return 1/(i+1) *1.5;
             }
+            
+            var showTrail = function(d){
+                    console.log("clicked on " + d.user);
+                    svg.selectAll("#past").remove();
+                    svg.append("g").attr("class", "pastCircles").attr("id", "past").style("fill", d.color);
+                    svg.selectAll("series, #past")
+                            .selectAll("circle")
+                            .data(d.pastPos, function(d){return d;})
+                            .enter().append("circle")
+                            .attr("id", "past")
+                            .attr("cx", getX)
+                            .attr("cy", getY)
+                            .attr("r", function(d){return 5;})
+                            .style("opacity", .5);
+                
+                var l = d.pastPos.length;
+                for(var i = 0; i < l - 1; i++){
+                 svg.select("series, #past").append("line")
+                    .attr("x1", xScale(d.pastPos[i][0]))
+                    .attr("y1", yScale(d.pastPos[i][1]))
+                    .attr("x2", xScale(d.pastPos[i+1][0]))
+                    .attr("y2", yScale(d.pastPos[i+1][1]))
+                    .style("stroke", 2)
+                    .style("opacity", .5);
+                }
+                
+                }
             
             var randomMove = function(d){
              var temp = users[d].pos;
@@ -261,7 +288,8 @@ Other future plans:
                 form.enter().append("p")
                 .attr("id", key)
                 .text(function(d){ return "user " + d.user;})
-                .style("color", function(d){ console.log(d.color); return d.color;});
+                .style("color", function(d){ console.log(d.color); return d.color;})
+                .on("click", showTrail);
                 
             //Updating current elements
                 //updating all of the circles
@@ -417,7 +445,8 @@ Other future plans:
                 .enter().append("p")
                 .attr("id", key)
                 .text(function(d){ return "user " + d.user;})
-                .style("color", function(d){ console.log(d.color); return d.color;});
+                .style("color", function(d){ console.log(d.color); return d.color;})
+                .on("click", showTrail);
             
             
             //Actions for clicking button
