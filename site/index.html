@@ -481,11 +481,13 @@ Other future plans:
                 .on("click", showTrail);
             
             
-            //Actions for clicking button
+            //Actions for clicking buttons
             d3.selectAll("button").on("click", function(d){
               
                var buttonID = d3.select(this).attr("class");
                 
+                //Adds a random user to exact location
+                //super each to make it go random... I should probably write an add user function***
                 if( buttonID == "add") {
                     
                     var col1 =  "hsl(" + Math.random() * 360 + ",70%,60%)";
@@ -496,7 +498,11 @@ Other future plans:
                             pastPos: []
                         });   
                                       
-                }else if(buttonID == "update") {
+                }
+                //Changes all user's most current location to this... currently it completely disregards the last 4 current
+                //I should probably write it so that it pushes the last 4 into pastPos... but this is mainly for prototyping anyway
+                //there isn't any real value to this function... (I know, bad programming Adam)
+                else if(buttonID == "update") {
                     var len = users.length;
                     
                     if(len >= 1)
@@ -510,7 +516,9 @@ Other future plans:
                     if(len >= 5)
                     {users[4].pos = [[50, 50], [0,0], [10, 95], [60, 300]];}
 
-                }else if(buttonID == "remove") {
+                }
+                //Removes the user at position 0... hopefully one day, it will remove the selected user
+                else if(buttonID == "remove") {
                     var temp = document.getElementById("drop");
                     var temp = temp.options[temp.selectedIndex].value;
                     console.log("removing " + temp);
@@ -518,14 +526,16 @@ Other future plans:
                     if(temp == "none"){
                         users.shift();}
                     else{
-                        
+                        //EMPTY
                     }   
-                    
-                    
-                
-                }else if(buttonID == "animate") {
+                }
+                //Toggles whether or not we are currently animating
+                //ATM, animating means moving all user a random amount (prototyping only?)
+                else if(buttonID == "animate") {
                         anim = !anim;
                     }
+                //Takes a random user and sets their current location to a random location
+                //This does correctly update pastPos
                 else if(buttonID == "updateOne") {
                     var index = Math.floor(Math.random()*10);
                     console.log(index);
@@ -535,7 +545,11 @@ Other future plans:
                     users[index].pastPos.unshift(temp);
                     users[index].pos.unshift([Math.floor(Math.random()*100), Math.floor(Math.random()*100)]);
                     
-                }else if(buttonID == "newLoc") {
+                }
+                //This button is the submission for the form. It either adds a new user and
+                //puts its current location to the entered coordinates or it changes the
+                //selected user's current location to the supplied coordinates
+                else if(buttonID == "newLoc") {
                     var sel = document.getElementById("drop");
                     var selValue = sel.options[sel.selectedIndex].value;
                     var newLoc = [document.getElementById("newLocX").value, document.getElementById("newLocY").value];
@@ -572,13 +586,15 @@ Other future plans:
                         
                         
                     }
-               
+                
+                //All of these buttons do something to the data
+                //therefore, we need to update the visuals associated with that data
                 updateData(series);
-//                updateData(series);
-//                updateData(series);
+
                 return d;
             });
             
+            //Calls that function ever #ms
             setInterval(animate, 1000);
             
         </script>
