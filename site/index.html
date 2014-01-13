@@ -94,6 +94,8 @@ Other future plans:
             
             var anim = false; //Currently it is only used to know whether or not all users should randomly move forward (prototyping)
             
+            var selectedUser;
+            
             //Initializing the array of users
             //Every user should have:
             // user: A User ID -- I'm just using integers starting at 0 as this is what the kinect will give me?
@@ -217,7 +219,8 @@ Other future plans:
                     console.log("clicked on " + d.user);
                     svg.selectAll("#past").remove();
                     svg.append("g").attr("class", "pastCircles").attr("id", "past").style("fill", d.color);
-                    
+                    var selection = svg.select("series, #past");
+                
                     //draw all circles
                     svg.selectAll("series, #past")
                             .selectAll("circle")
@@ -231,8 +234,20 @@ Other future plans:
                 
                     //draw all connecting lines
                     var l = d.pastPos.length;
+
+                    //line attaching this to current position
+                    selection.append("line")
+                        .attr("x1", xScale(d.pastPos[0][0]))
+                        .attr("y1", yScale(d.pastPos[0][1]))
+                        .attr("x2", xScale(d.pos[d.pos.length - 1][0]))
+                        .attr("y2", yScale(d.pos[d.pos.length - 1][1]))
+                        .style("stroke", 2)
+                        .style("opacity", .5)
+                        .style("stroke", d.color);
+                    
+                    
                     for(var i = 0; i < l - 1; i++){
-                     svg.select("series, #past").append("line")
+                     selection.append("line")
                         .attr("x1", xScale(d.pastPos[i][0]))
                         .attr("y1", yScale(d.pastPos[i][1]))
                         .attr("x2", xScale(d.pastPos[i+1][0]))
