@@ -1,5 +1,30 @@
+//Adam M. Pere
+//Involution Studios
+//January 2014
+//
+//This is a scatter plot to create the framework for my person tracking application.
+//The data is broken up by users (or people in the studio). Each user has 4 points (this may change)
+//that represent their current location (the largest most opaque dot) and thier last 3 previous locations
+//(the smaller more opaque dots).
+//
+//Project: InvoLive
+//This is a 2d birds eye view of the studio (bare bones simply to illustrate the idea).
+//
+//Each set of colored dots represents a person and their motion path. The largest and most opaque dot is the current location of the person and the smaller less opaque dots are their past locations (aka their walking/motion path). 
+//
+//The further apart the dots are, the faster he/she is moving. The closer they are, the slower he/or she is moving. 
+//
+//Once I get the tracking working, I plan on adding more detail (furniture and other fun) to the map and making it look nicer. 
+//
+//Other future plans:
+//- To get live video with data overlaid
+//- Collect studio data and map overtime/compare dates
+//- To get tracking in multiple rooms
+//- To identify people (are they in the studio: fitbit, phone connected to wifi, computer connected to network, etc. Hot Zones (aka people's working areas)
+//- Finding other possible data to collect: heat across the room, etc.
 
-
+                      
+                      
 //Width and height of svm
 var w = 800;
 var h = 800;
