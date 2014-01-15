@@ -1,33 +1,35 @@
 <?php
-// load in mysql server configuration (connection string, user/pw, etc)
-include 'mysqlConfig.php';
-// connect to the database
-@mysql_select_db($dsn) or die( "Unable to select database");
- 
-// reads the map db
- 
-$query="SELECT `height` FROM `v_map` ORDER BY `row`, `col`";  //Change this to my DB
-mysql_query($query);
- 
-$result = mysql_query($query,$link) or die('Errant query: '.$query);
+    $username = "adam_select"; 
+    $password = "password";   
+    $host = "localhost";
+    $database="trackingdb";
+    
+    $server = mysql_connect($host, $username, $password);
+    $connection = mysql_select_db($database, $server);
+    
+ //change to my query
+    $myquery = "
+        Select a.ID, a.user, a.color, b.x, b.y, b.z, b.Time_Added
+        From users a, positions b
+        Where a.tracking = 1 and a.ID = b.ID
+        Order By b.time_added DESC 
+    ";
 
-//Fairly certain that this is DB dependant
-//// outputs the db as lines of text.
-//header('Content-type: text/plain; charset=us-ascii');
-//$i=0;
-//$line="";
-// 
-//if(mysql_num_rows($result)) {
-// while($value = mysql_fetch_assoc($result)) {
-// 
-//$line=$line.$value["height"];
-// $i=$i+1;
-// if ($i==52) {
-// $i=0;
-// echo $line."\n";
-// $line="";}
-// else {$line=$line.",";}
-// }
-//}
-mysql_close();
+    $query = mysql_query($myquery);
+    
+    if ( ! $query ) {
+        echo mysql_error();
+        die;
+    }
+    
+    $data = array();
+    
+    //update from here?
+    for ($x = 0; $x < mysql_num_rows($query); $x++) {
+        $data[] = mysql_fetch_assoc($query);
+    }
+    
+    echo json_encode($data);     
+     
+    mysql_close($server);
 ?>
