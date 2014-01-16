@@ -80,13 +80,13 @@ var users = [
 //Including animations (aka breathing circles) or for continously 
 //having user(s) move forward random amount when running tests/prototyping
 var animate = function(){
-    if(anim){
-        var l = users.length;
-        for(i = 0; i < l; i++){
-         randomMove(i);   
-        }
-        
-    }
+//    if(anim){
+//        var l = users.length;
+//        for(i = 0; i < l; i++){
+//         randomMove(i);   
+//        }
+//        
+//    }
     
     //This chunk of code animates the 'breathing' of every circle
 //                var circ = svg.selectAll("circle")
@@ -101,7 +101,7 @@ var animate = function(){
     
     //updates the visuals (only necessary if the data has been changed (aka random move)
     //this line should be commented out if you want the breathing effect. I'm not sure why :\
-    updateData(series);
+    refreshData();
 };
 
 //returns the user's ID (aka their user#)
@@ -172,7 +172,7 @@ var showTrail = function(d){
     
         //draw all connecting lines
         var l = d.pastPos.length;
-
+        
         //line attaching this to current position
         selection.append("line")
             .attr("x1", xScale(d.pastPos[0][0]))
@@ -200,19 +200,30 @@ var showTrail = function(d){
 //Moves the current user a random amount in the x and y direction. Useful for prototyping a real person's motion path
 //for a person walking at varying speeds/velocities
 var randomMove = function(d){
+    //console.log(d);
+    console.log("trying animate on index " + d);
+    for(var i = 0; i < users.length; i++){
+     console.log("Index: " + i + " User " + users[i].user);   
+    }
     var temp = users[d].pos;
     temp = temp[0];
-
+    
     if(users[d].pos.length >= 4){
         var temp2 = users[d].pos.pop();
         users[d].pastPos.unshift(temp2);
-     }    
-     users[d].pos.unshift([temp[0] + Math.floor(Math.random()*40) - 10, temp[1] + Math.floor(Math.random()*40) - 10]);        
+     }
+    
+     var r1 = Math.floor(Math.random()*40) - 10;
+     var r2 = Math.floor(Math.random()*40) - 10;
+     var x1 = parseInt(temp[0]) + r1;
+     var y1 = parseInt(temp[1]) + r2;
+     console.log("at (" + temp[0] + "," + temp[1] + ") to (" + x1 + ", " + y1 + ")" + "randoms: " + r1 + ", " + r2);
+     users[d].pos.unshift([x1, y1]);        
 };
 
 var refreshData = function(){
      d3.json("userRead.php", function(error, data) {
-            users = data;
+         users = data;
             });
     updateData(series);
 };
@@ -279,10 +290,12 @@ var updateData = function(d){
     form.enter().append("p")
         .attr("id", key)
         .text(function(d){ return "user " + d.user;})
-        .style("color", function(d){ console.log(d.color); return d.color;})
+        .style("color", getColor)
         .on("click", showTrail);
     
 //Updating current elements (no reason to update the users... they don't actually change...or shouldn't... if you change something about them, insert code here)
+    series.style("color", getColor)
+    
     //updating all of the circles
     series.selectAll("circle")
          .data(getPosition)
@@ -431,13 +444,13 @@ var select = d3.select("body").select("form").select("select").selectAll("userDr
             .append("option")
             .attr("value", function(d){return d.user;})
             .text(function(d){ return "user " + d.user;})
-            .style("color", function(d){ console.log(d.color); return d.color;});
+            .style("color", getColor);
 
 var form = d3.select("#col1").selectAll("p").data(users,key)
             .enter().append("p")
             .attr("id", key)
             .text(function(d){ return "user " + d.user;})
-            .style("color", function(d){ console.log(d.color); return d.color;})
+            .style("color", getColor)
             .on("click", showTrail);
 
 
@@ -480,7 +493,7 @@ d3.selectAll("button").on("click", function(d){
     //Removes the user at position 0... hopefully one day, it will remove the selected user
     else if(buttonID == "remove") {
         var temp = document.getElementById("drop");
-        var temp = temp.options[temp.selectedIndex].value;
+        var temp = temp.options[temp.selectedIndex].value ;
         console.log("removing " + temp);
         
         if(temp == "none"){
@@ -497,10 +510,10 @@ d3.selectAll("button").on("click", function(d){
     //Takes a random user and sets their current location to a random location
     //This does correctly update pastPos
     else if(buttonID == "updateOne") {
-        var index = Math.floor(Math.random()*10);
-        console.log(index);
+        var index = Math.floor(Math.random()*users.length);
         if(index >= users.length)
-        {index = 10 - index -1;}
+        {index = users.length -  index;}
+                console.log(index);
         var temp = users[index].pos.pop();
         users[index].pastPos.unshift(temp);
         users[index].pos.unshift([Math.floor(Math.random()*100), Math.floor(Math.random()*100)]);
@@ -511,7 +524,7 @@ d3.selectAll("button").on("click", function(d){
     //selected user's current location to the supplied coordinates
     else if(buttonID == "newLoc") {
         var sel = document.getElementById("drop");
-        var selValue = sel.options[sel.selectedIndex].value;
+        var selValue = sel.options[sel.selectedIndex].value ;
         var newLoc = [document.getElementById("newLocX").value, document.getElementById("newLocY").value];
         console.log("user: " + selValue + " at (" + newLoc[0] + ", " + newLoc[1] + ")");
         
@@ -542,9 +555,10 @@ d3.selectAll("button").on("click", function(d){
             var t= document.getElementById("drop");
             var tV = t.options[t.selectedIndex].value;
             
-            randomMove(tV);
-            
-            
+            randomMove(tV); 
+        }
+        else if(buttonID == "refresh") {
+            refreshData(); 
         }
     
     //All of these buttons do something to the data
