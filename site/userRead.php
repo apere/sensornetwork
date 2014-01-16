@@ -1,7 +1,7 @@
 <?php
-    $dbhost = 'localhost:8888';
-    $dbuser = 'adam_select';
-    $dbpass = 'password';
+    $dbhost = 'us-cdbr-east-04.cleardb.com';
+    $dbuser = 'b01556d5fadf7a';
+    $dbpass = '4ac9b1e3';
     $conn = mysql_connect($dbhost, $dbuser, $dbpass);
     
     if(! $conn )
@@ -13,7 +13,7 @@
             Where a.tracking = 1 and a.ID = b.ID
             Order By b.time_added'; 
     
-    mysql_select_db('trackingdb');
+    mysql_select_db('heroku_357d3113aeb360f');
     $retval = mysql_query( $sql, $conn );
 
     if(! $retval )
