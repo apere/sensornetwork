@@ -83,6 +83,7 @@ Example output:
                 unset($value["pos"][$i]);
             }
         }
+        unset($value);
     }
     
 

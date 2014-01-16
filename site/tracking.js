@@ -211,11 +211,11 @@ var randomMove = function(d){
 };
 
 var refreshData = function(){
- d3.json("userRead.php", function(error, data) {
-        users = data;
-     );   
-    
-}
+     d3.json("userRead.php", function(error, data) {
+            users = data;
+            });
+    updateData(series);
+};
 
 //This function updates all of the visuals connected with data
 //adds or removes circles, updates circle locations (same thing for labels if you want those)
