@@ -210,6 +210,13 @@ var randomMove = function(d){
      users[d].pos.unshift([temp[0] + Math.floor(Math.random()*40) - 10, temp[1] + Math.floor(Math.random()*40) - 10]);        
 };
 
+var refreshData = function(){
+ d3.json("userRead.php", function(error, data) {
+        users = data;
+     );   
+    
+}
+
 //This function updates all of the visuals connected with data
 //adds or removes circles, updates circle locations (same thing for labels if you want those)
 //updates anything associated per user (aka a legend and whatnot)
