@@ -9,17 +9,24 @@
       die('Could not connect: ' . mysql_error());
     }
 
+
     //If statement to determine whether or not we want to add
     //a new user or position
     if(array_key_exists("user", $_GET)) {
-        $sql = 'INSERT
+        //URL info: ID=__&user=__&color=%23__&tracking=__
+        $sql = "INSERT
             INTO users (ID, user, color, tracking)
-            VALUES ({$_GET["ID"]}, {$_GET["user"]}, {$_GET["color"]}, 1)';
+            VALUES ({$_GET['ID']}, {$_GET['user']}, {$_GET['color']}, 1)";
+        
+        echo $sql;
     }
-    else if(array_key_exists("x", $_GET){
-       $sql = 'INSERT
+    else if(array_key_exists("x", $_GET)){
+        //URL info: ID=__&user=__&color=%23__&tracking=__
+       $sql = "INSERT
             INTO positions (ID, x, y, z)
-            VALUES ({$_GET["ID"]}, {$_GET["x"]}, {$_GET["y"]}, {$_GET["z"]})'; 
+            VALUES ({$_GET['ID']}, {$_GET['x']}, {$_GET['y']}, {$_GET['z']})"; 
+        
+        echo $sql;
     }
      
     
@@ -30,5 +37,3 @@
     
     mysql_close($conn);
     ?>
-
-
