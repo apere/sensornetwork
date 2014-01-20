@@ -1,0 +1,271 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>X3DOM conventions &mdash; X3DOM v1.5.1 documentation</title>
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.5.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="X3DOM v1.5.1 documentation" href="../index.html" />
+   
+    
+    <script src="http://x3dom.org/download/dev/x3dom-full.js"></script>
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">X3DOM v1.5.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="x3dom-conventions">
+<span id="internals-conventions"></span><h1>X3DOM conventions<a class="headerlink" href="#x3dom-conventions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="file-encoding-indentation">
+<h2>File Encoding, Indentation<a class="headerlink" href="#file-encoding-indentation" title="Permalink to this headline">¶</a></h2>
+<p>With all X3DOM source files the following file format
+and encoding conventions have to be used:</p>
+<ul class="simple">
+<li>File encoding: <strong>UTF-8</strong>, without Byte-Order-Mark (BOM)</li>
+<li>Lineendings: <strong>LF</strong> (Unix Line Feed)</li>
+<li>Indentation: <strong>4 spaces</strong> (unless otherwise noted)</li>
+</ul>
+<p>A note about indentation: Essentially this is a
+no-tab policy. Which means no tab chars in the code to be used
+for indentation. Most editors allow you to configure using tabs,
+but then save the code as spaces. This is very convenient
+functionality you should use if you are used to to indent with
+the TAB key.</p>
+<p>TODO: basic guide of how to set this for webstorm,vi,emacs,sublime,textmate</p>
+</div>
+<div class="section" id="commit-early-commit-often">
+<h2>Commit early, commit often<a class="headerlink" href="#commit-early-commit-often" title="Permalink to this headline">¶</a></h2>
+<p>If at all possible commit small units of work very often.
+Large commits, with no updates of your codebase in between
+most likely will lead to conflicts in projects with more
+than one committer. Committing often also lets your fellow
+programmers know what you are working on and integrate your
+changes early on.</p>
+<p>Partition your work into small logical pieces and commit as
+often as possible. View <tt class="docutils literal"><span class="pre">commit</span></tt> and <tt class="docutils literal"><span class="pre">push</span></tt> as a extended
+save operation. It&#8217;s far better to have ten 10-liner commits,
+than one 100 liner.</p>
+</div>
+<div class="section" id="use-descriptive-commit-messages">
+<h2>Use descriptive commit messages<a class="headerlink" href="#use-descriptive-commit-messages" title="Permalink to this headline">¶</a></h2>
+<p>Try to avoid non-descriptive commit messages unless it&#8217;s really small
+correction like fixing a typo or forgotton semicolon. Always describe
+what you have done succinctly. If you are closing a ticket with this
+commit refer the ticket in your message. For example:</p>
+<div class="highlight-python"><pre>git commit -m "Fixing readability problem reported with issue #123"</pre>
+</div>
+<p>The following messages also <a class="reference external" href="https://help.github.com/articles/closing-issues-via-commit-messages">close the referred ticket</a> in GitHub. No
+need to log in for closing tickets:</p>
+<div class="highlight-python"><pre>git commit -m "Typo, fixing #123"
+git commit -m "Added CAD example closing #123"</pre>
+</div>
+<p>You can refer to github issues, commits and tickets by using the SHA or
+issue number:</p>
+<div class="highlight-python"><pre>git commit -m "Fixing bug introduced with 70b0d56e1aca5ec6b55b915b1810a5caeddfcd62"</pre>
+</div>
+<p>More:</p>
+<blockquote>
+<div><ul class="simple">
+<li>GitHub Help</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="git-workflow">
+<h2>Git Workflow<a class="headerlink" href="#git-workflow" title="Permalink to this headline">¶</a></h2>
+<p>Make it a policy to issue a <tt class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></tt> before you start working and
+then again before you commit and push. Push your work as soon as
+possible - ideally after a commit.</p>
+<p>Make yourself familiar with the <a class="reference external" href="http://git-scm.com/book/en/Git-Tools-Stashing">stash</a> command if you need to set
+aside changes during work.
+Even more important is to use <a class="reference external" href="http://git-scm.com/book/en/Git-Branching-Branch-Management">local branches</a> for developing a new
+feature or trying things out. It is very easy to do and you will have
+less merge conflicts. If you go this route, it important that you
+regulary merge changes from the upstream master into your local branch
+to keep up to date.</p>
+<p>Don&#8217;t push your branch to GitHub unless more than one person is workin
+on that branch. If you need to sync local branches from say your
+workstation to a laptop or home machine, there are other ways (ssh,
+format-patch, etc.)</p>
+<p>Familiarize yourself with the use of the source control on
+the command line (<a class="reference external" href="http://git-scm.com/doc">Git Manual</a>). Only after you understand how this
+works, you can switch to GUI tools. It&#8217;s important to understand
+the basics of the versioning system. The GUI tools disguise much
+of what&#8217;s going on. Learning to use a source control system is a
+one-time effort that will benefit you far into the future
+(even if versioning systems change, the learning is only incremental).
+Code conflicts are inevitabel and mastering your tool
+can help to resove those conflicts.</p>
+<p>Some pointers:</p>
+<ul class="simple">
+<li>Git aliases <a class="reference external" href="https://git.wiki.kernel.org/index.php/Aliases">https://git.wiki.kernel.org/index.php/Aliases</a></li>
+<li><a class="reference external" href="http://git-scm.com/doc">Git Manual</a></li>
+</ul>
+<p><a href="#id1"><span class="problematic" id="id2">**</span></a>The versioning system is not a replacement for communication. **</p>
+</div>
+<div class="section" id="js-coding-conventions">
+<h2>JS Coding Conventions<a class="headerlink" href="#js-coding-conventions" title="Permalink to this headline">¶</a></h2>
+<p>The following coding guidelines should be followed:</p>
+<div class="section" id="semicolon">
+<h3>Semicolon<a class="headerlink" href="#semicolon" title="Permalink to this headline">¶</a></h3>
+<p>Always end a statement mit a semicolon. For C/C++ coders that&#8217;s ususally
+a non issue. If you are coming from another dynamic language, it happens
+frequently to forget the semicolon.</p>
+</div>
+<div class="section" id="if-else-shortcuts">
+<h3>if/else shortcuts<a class="headerlink" href="#if-else-shortcuts" title="Permalink to this headline">¶</a></h3>
+<p>Aviod the use of <tt class="docutils literal"><span class="pre">if/else</span></tt> constructs without curly braces. It impaires
+readability and is a potential source for errors:</p>
+<p>Good:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="k">if</span> <span class="p">(</span><span class="nx">condition</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">doSomething</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="k">else</span> <span class="p">{</span>
+    <span class="nx">doAnotherThing</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Bad:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="k">if</span> <span class="p">(</span><span class="nx">condition</span><span class="p">)</span>
+    <span class="nx">doSomething</span><span class="p">();</span>
+<span class="k">else</span>
+    <span class="nx">doOtherThing</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>zwischen Funktionen je eine Leerzeile zur Übersichtlichkeit</li>
+<li>möglichst wenig anonyme funktionen verwenden</li>
+<li>immer mit ; abschliessen</li>
+<li>that = this</li>
+<li>variablen nicht inline deklarieren/initialisieren sondern direkt
+nach funktionsbeginn var x,j,k = 0, var test = true, etc. Auch die
+Zähler (js kennt nur zwei contexte: global und funktionslokal), blocklocal
+gibts bei js nicht.</li>
+<li>sprechende Namen verwenden</li>
+<li>hier mehr zur Inspiration:
+<a class="reference external" href="http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml">http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="documentation-and-tests">
+<h2>Documentation and Tests<a class="headerlink" href="#documentation-and-tests" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Prose</li>
+<li>JSDoc</li>
+<li>Jeder Entwickler ist für die Dokumentation seines codes verantworlich.
+Wer code eincheckt sollte ihn auch Dokumentieren, denn keiner versteht
+besser was er gemacht hat. JSDoc ist da ausreichend, im Idealfall auch
+in der Prosa-Doku.</li>
+<li>Wenn sich was ändert, Doku anpassen. Oft sind das nur Kleinigkeiten
+die schnell gemacht sind.</li>
+<li>Im Idealfall wird auch ein Test geschrieben, vom Implementator des
+Features.</li>
+<li>Wenn ein bug gefunden wird, sollte möglichst ein Test gebaut werden, der den Bug
+verifiziert und nach dem Fix sollte der test dann laufen.</li>
+<li>Konfiguration der IDE oder generierte Files gehören nicht ins repo</li>
+</ul>
+</div>
+<div class="section" id="python-files">
+<h2>Python Files<a class="headerlink" href="#python-files" title="Permalink to this headline">¶</a></h2>
+<p>For Python there are official, very sane, guidelines outlined in
+<a class="reference external" href="http://www.python.org/dev/peps/pep-0008/">PEP-8</a>. All Python code should follow this styleguide.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><!-- 
+<p class="logo"><a href="../index.html">
+  <img class="logo" src="../_static/x3dom-logo-small.png" alt="Logo"/>
+</a></p>
+-->
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">X3DOM conventions</a><ul>
+<li><a class="reference internal" href="#file-encoding-indentation">File Encoding, Indentation</a></li>
+<li><a class="reference internal" href="#commit-early-commit-often">Commit early, commit often</a></li>
+<li><a class="reference internal" href="#use-descriptive-commit-messages">Use descriptive commit messages</a></li>
+<li><a class="reference internal" href="#git-workflow">Git Workflow</a></li>
+<li><a class="reference internal" href="#js-coding-conventions">JS Coding Conventions</a><ul>
+<li><a class="reference internal" href="#semicolon">Semicolon</a></li>
+<li><a class="reference internal" href="#if-else-shortcuts">if/else shortcuts</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#documentation-and-tests">Documentation and Tests</a></li>
+<li><a class="reference internal" href="#python-files">Python Files</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Fraunhofer IGD/VCST.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+<style>
+    .internal-node-list ul,
+    .internal-node-list, li {
+        margin:0;
+        padding:0;
+    }
+</style>
+  </body>
+</html>

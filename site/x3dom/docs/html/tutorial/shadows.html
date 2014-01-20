@@ -1,0 +1,152 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Shadows &mdash; X3DOM v1.5.1 documentation</title>
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.5.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="X3DOM v1.5.1 documentation" href="../index.html" />
+    <link rel="up" title="Tutorial" href="index.html" />
+    <link rel="next" title="Generic 3D data conversion" href="dataconversion.html" />
+    <link rel="prev" title="Images, sound and movie formats" href="imagesoundmovie.html" />
+   
+    
+    <script src="http://x3dom.org/download/dev/x3dom-full.js"></script>
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="dataconversion.html" title="Generic 3D data conversion"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="imagesoundmovie.html" title="Images, sound and movie formats"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">X3DOM v1.5.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="shadows">
+<span id="id1"></span><h1>Shadows<a class="headerlink" href="#shadows" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial shows how to add shadows to your scene and how specific shadow settings can be used to influence shadow quality and performance.</p>
+<div class="section" id="turning-on-shadows">
+<h2>Turning on shadows<a class="headerlink" href="#turning-on-shadows" title="Permalink to this headline">¶</a></h2>
+<p>To be able to use shadows, you first need a light source. What kind of light source does not matter &#8211; shadows can be used with directional lights and spot lights as well as point lights. Shadow rendering is turned on, when the <tt class="docutils literal"><span class="pre">shadowIntensity</span></tt> property of a light node is set to a value greater than zero (see code snippet below). The higher the setting, the darker the shadows will be. However, be advised that shadow computations are quite expensive and can have noticable impact on the performance of your application.</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;directionalLight</span> <span class="na">direction=</span><span class="s">&#39;0 0 -1&#39;</span> <span class="na">intensity=</span><span class="s">&#39;1.0&#39;</span> <span class="na">shadowIntensity=</span><span class="s">&#39;0.7&#39;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/directionalLight&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="basic-shadow-settings">
+<h2>Basic shadow settings<a class="headerlink" href="#basic-shadow-settings" title="Permalink to this headline">¶</a></h2>
+<p>One of the most important settings &#8211; both regarding the visual quality of the shadows and the performance &#8211; is the <tt class="docutils literal"><span class="pre">shadowMapSize</span></tt> setting. A shadow map is a texture which captures the scene from a light&#8217;s point of view and is the basis for all shadow computations in X3DOM. The size of the shadow map determines the resolution at which shadows are computed. The standard setting of 1024 should achieve good results in most cases, but depending on the situation you might want to change it anyway. In general, a higher shadow map resolution leads to more detailed shadows, but also to a significant drop in performance.</p>
+<p>Another option which has significant impact on the quality of the shadows is shadow map filtering. Filtering makes the edges of the shadows seem smoother. It can be controlled with the <tt class="docutils literal"><span class="pre">shadowFilterSize</span></tt> attribute. A higher filter size increases the amount of blurring that is applied to a shadow map. However, the effectivenes of this technique does not only depend on the filter size, but also on the resolution of the shadow map. A high-resolution shadow map requires a higher filter size setting for filtering to be effective.</p>
+</div>
+<div class="section" id="cascading">
+<h2>Cascading<a class="headerlink" href="#cascading" title="Permalink to this headline">¶</a></h2>
+<p>Another technique to improve shadow quality which is especially helpful in big scenes is called cascading: the visible area is parted along the z-axis and for each of the created divisions (cascades) shadows are computed independently. The number of cascades to be used can be set with the <tt class="docutils literal"><span class="pre">shadowCascades</span></tt> option. Cascading can be used with directional lights and spot lights, but not with point lights. Be advised that this technique is only effective, if the light covers a relatively big area. Consequently, the main application scenario lies in the usage with a directional light.</p>
+</div>
+<div class="section" id="advanced-shadow-settings">
+<h2>Advanced shadow settings<a class="headerlink" href="#advanced-shadow-settings" title="Permalink to this headline">¶</a></h2>
+<p>With the right combination of <tt class="docutils literal"><span class="pre">shadowMapSize</span></tt>, <tt class="docutils literal"><span class="pre">shadowFilterSize</span></tt> and <tt class="docutils literal"><span class="pre">shadowCascades</span></tt> a satisfyable shadow quality should be achievable in most cases. However, there are situations in which further adjustments might be needed, which is why an additional set of shadow options was introduced into X3DOM.
+The first one &#8211; <tt class="docutils literal"><span class="pre">shadowOffset</span></tt> &#8211; is used to hide artifacts which may occur in specific scenarios. One of these situations that is escpecially susceptible to inaccuracies is a scene in which the light direction is nearly parallel to an object&#8217;s surface. By increasing the <tt class="docutils literal"><span class="pre">shadowOffset</span></tt> the shadow artifacts become less pronounced. However, not only artifacts are affected by this setting, but to some degree the correctly drawn shadows are, too. A high shadow offset can result in light to leak onto objects which should be in shadow. For this reason the default offset value is zero.</p>
+<p>Further options to influence shadow computations are given by the light node&#8217;s <tt class="docutils literal"><span class="pre">zNear</span></tt> and <tt class="docutils literal"><span class="pre">zFar</span></tt> properties. These settings determine the placement of the near and far planes of the light projection, i.e. the bounds of the area in which shadow casters are captured. If no such setting is given, the near and far planes are placed automatically. An example scenario where a manual setting of one of these planes might be helpful would be a scene where an object is placed very closely to the light source. If you don&#8217;t want that object to cast a shadow, the <tt class="docutils literal"><span class="pre">zNear</span></tt> setting can be set to a value which places the near plane behind that object and thereby excludes it from the shadow computations.
+(Please note: if the shadows disappear when a shadow caster leaves the visible view area, then try setting the <cite>Environment</cite> bindable node&#8217;s <tt class="docutils literal"><span class="pre">frustumCulling</span></tt> field to false.)</p>
+<p>The last two settings &#8211; <tt class="docutils literal"><span class="pre">shadowSplitFactor</span></tt> and <tt class="docutils literal"><span class="pre">shadowSplitOffset</span></tt> &#8211; are additional parameters for cascading. As mentioned before, when using shadow cascades the visible area is split along the z-axis. The <tt class="docutils literal"><span class="pre">shadowSplitFactor</span></tt> setting determines, how these splits are placed. A setting of zero gives an equidistant placement, a setting of one a logarithmic placement. In most cases a logarithmic placement should achieve better results, since it allocates more resolution to the close range where it is needed the most. However, the equidistant split scheme can still be useful in some scenarios, as the transitions between different cascades are less apparent.
+The <tt class="docutils literal"><span class="pre">shadowSplitOffset</span></tt> option was introduced, because in some cases the cascades close to the near plane can get quite small. While this is good for shadow quality in that specific cascade, the transition to the next cascade will become all the more apparent. By using the <tt class="docutils literal"><span class="pre">shadowSplitOffset</span></tt> property, the split positions are moved away from the camera while the computation scheme that is defined by <tt class="docutils literal"><span class="pre">shadowSplitFactor</span></tt> is still respected.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><!-- 
+<p class="logo"><a href="../index.html">
+  <img class="logo" src="../_static/x3dom-logo-small.png" alt="Logo"/>
+</a></p>
+-->
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Shadows</a><ul>
+<li><a class="reference internal" href="#turning-on-shadows">Turning on shadows</a></li>
+<li><a class="reference internal" href="#basic-shadow-settings">Basic shadow settings</a></li>
+<li><a class="reference internal" href="#cascading">Cascading</a></li>
+<li><a class="reference internal" href="#advanced-shadow-settings">Advanced shadow settings</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Tutorial</a><ul>
+      <li>Previous: <a href="imagesoundmovie.html" title="previous chapter">Images, sound and movie formats</a></li>
+      <li>Next: <a href="dataconversion.html" title="next chapter">Generic 3D data conversion</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Fraunhofer IGD/VCST.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+<style>
+    .internal-node-list ul,
+    .internal-node-list, li {
+        margin:0;
+        padding:0;
+    }
+</style>
+  </body>
+</html>

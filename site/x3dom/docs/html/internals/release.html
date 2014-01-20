@@ -1,0 +1,158 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>X3DOM release process &mdash; X3DOM v1.5.1 documentation</title>
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.5.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="X3DOM v1.5.1 documentation" href="../index.html" />
+   
+    
+    <script src="http://x3dom.org/download/dev/x3dom-full.js"></script>
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">X3DOM v1.5.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="x3dom-release-process">
+<span id="internals-release"></span><h1>X3DOM release process<a class="headerlink" href="#x3dom-release-process" title="Permalink to this headline">¶</a></h1>
+<p>This doc collects all steps to be done for creating
+a X3DOM release. At this point, release notes should be done,
+everything should be committed and pusehd, ready for release.</p>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>Copy release notes to <tt class="docutils literal"><span class="pre">doc/guide/releasenotes.rst</span></tt></p>
+<p>Set version: <tt class="docutils literal"><span class="pre">doc/guide/conf.py</span></tt></p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">version</span> <span class="o">=</span> <span class="s1">&#39;x.x&#39;</span>
+<span class="nv">release</span> <span class="o">=</span> <span class="s1">&#39;x.x.x&#39;</span>
+</pre></div>
+</div>
+<p>Include new version x3dom in docs: doc/guide/_themes/flask/layout.html</p>
+<div class="highlight-bash"><div class="highlight"><pre>cp dist/x3dom-full.js doc/guide/_static/
+vi doc/guide/_themes/flask/layout.html
+</pre></div>
+</div>
+<p>replace</p>
+<div class="highlight-bash"><div class="highlight"><pre>&lt;script <span class="nv">src</span><span class="o">=</span><span class="s2">&quot;http://x3dom.org/download/x.x/x3dom-full.js&quot;</span>&gt;&lt;/script&gt;
+</pre></div>
+</div>
+<p>with</p>
+<div class="highlight-bash"><div class="highlight"><pre>&lt;script <span class="nv">src</span><span class="o">=</span><span class="s2">&quot;{{pathto(&#39;_static/x3dom-full.js&#39;, 1) }}&quot;</span>&gt;&lt;/script&gt;
+</pre></div>
+</div>
+<p>Remove dev/beta notice</p>
+<div class="highlight-bash"><div class="highlight"><pre>&lt;div <span class="nv">id</span><span class="o">=</span><span class="s2">&quot;beta_notice&quot;</span>...
+</pre></div>
+</div>
+<p>Add older version links: <tt class="docutils literal"><span class="pre">doc/guide/_templates/sidebarintro.html</span></tt></p>
+</div>
+<div class="section" id="commit">
+<h2>Commit<a class="headerlink" href="#commit" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre>./manage.py --changelog
+git commit -Am <span class="s2">&quot;Release x.x.x&quot;</span>
+git tag x.x.x
+git push --tags
+</pre></div>
+</div>
+</div>
+<div class="section" id="build">
+<h2>Build<a class="headerlink" href="#build" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre>./manage.py --release x.x.x
+</pre></div>
+</div>
+<p>Copy <tt class="docutils literal"><span class="pre">dist/</span></tt> output to <tt class="docutils literal"><span class="pre">download/x.x.x/</span></tt> folder.</p>
+<p>Revert documentation changes.</p>
+<p>Finally the webpage nees to be updated, espeically the &#8220;status&#8221; section.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><!-- 
+<p class="logo"><a href="../index.html">
+  <img class="logo" src="../_static/x3dom-logo-small.png" alt="Logo"/>
+</a></p>
+-->
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">X3DOM release process</a><ul>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#commit">Commit</a></li>
+<li><a class="reference internal" href="#build">Build</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Fraunhofer IGD/VCST.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+<style>
+    .internal-node-list ul,
+    .internal-node-list, li {
+        margin:0;
+        padding:0;
+    }
+</style>
+  </body>
+</html>

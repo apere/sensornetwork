@@ -1,0 +1,92 @@
+<!-- 
+Adam M. Pere
+Involution Studios
+January 2014
+
+This is a scatter plot to create the framework for my person tracking application.
+The data is broken up by users (or people in the studio). Each user has 4 points (this may change)
+that represent their current location (the largest most opaque dot) and thier last 3 previous locations
+(the smaller more opaque dots).
+
+Project: InvoLive
+This is a 2d birds eye view of the studio (bare bones simply to illustrate the idea).
+
+Each set of colored dots represents a person and their motion path. The largest and most opaque dot is the current location of the person and the smaller less opaque dots are their past locations (aka their walking/motion path). 
+
+The further apart the dots are, the faster he/she is moving. The closer they are, the slower he/or she is moving. 
+
+Once I get the tracking working, I plan on adding more detail (furniture and other fun) to the map and making it look nicer. 
+
+Other future plans:
+- To get live video with data overlaid
+- Collect studio data and map overtime/compare dates
+- To get tracking in multiple rooms
+- To identify people (are they in the studio: fitbit, phone connected to wifi, computer connected to network, etc. Hot Zones (aka people's working areas)
+- Finding other possible data to collect: heat across the room, etc.
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>D3 Test</title>
+        <script type="text/javascript" src="d3/d3.v3.js"></script>
+        <script type="text/javascript" src="http://www.x3dom.org/download/dev/x3dom.js"></script>
+        <link rel="stylesheet" href="http://www.x3dom.org/download/dev/x3dom.css">
+        
+        <style type="text/css">
+                
+                        .axis path,
+                        .axis line {
+                                fill: none;
+                                stroke: black;
+                                shape-rendering: crispEdges;
+                        }
+                        
+                        .axis text {
+                                font-family: sans-serif;
+                                font-size: 11px;
+                        }
+            
+            .col1{
+                float: left;
+                width: 300px;
+                margin: 10px;
+            }
+            .col2{
+                float: left;
+                width: 900px;
+                margin: 10px;
+            }
+                
+                </style>
+        
+    </head>
+    <body>
+    
+        <div class = "col1" id = "col1" >   
+            <form class = "updateForm">        
+                Choose the user:
+                <select class = "userDrop" id = "drop">
+                    <option value = "none">Select One</option>
+                    <option value = "newUser">New User</option>
+                </select>
+                </br>
+                New Location: ( <input type = "text" size = "5" name = "x" id = "newLocX" > , <input type = "text" size = "5" name = "y" id = "newLocY"> ) </br>
+                <button type = "button" id = "newLoc" class = "newLoc" name = "newLoc">Enter</button>
+                <button type = "button" id = "move" class = "move" name = "Move">Move Forward</button>
+            </form>
+                
+            </br> 
+            <button type ="button" id="update" class ="update" name="update">Update All</button>
+            <button type ="button" id="updateOne" class ="updateOne" name="updateOne">Update One</button></br>    
+            <button type ="button" id="add" class ="add" name="add">Add New</button> 
+            <button type ="button" id="remove" class ="remove" name="remove">Remove</button> <br><br>
+            <button type ="animate" id="animate" class ="animate" name="animate">Animate</button> <br><br>
+            <button type ="refresh" id="refresh" class ="refresh" name="refresh">Refresh Data</button>
+         </div> 
+        
+        <div class = "col2" id = "col2"> </div>
+        <script src="tracking3D.js"></script>
+
+    </body>
+</html>     

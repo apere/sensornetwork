@@ -1,0 +1,101 @@
+<!--
+<scene render="true" bboxcenter="0,0,0" bboxsize="-1,-1,-1" pickmode="idBuf" dopickpass="true"> 
+           
+                <transform translation="-2 0 0">
+                    <shape>
+                        <appearance>
+                            <material diffusecolor="red"></material>
+                        </appearance>
+                        <box></box>
+                    </shape>
+                </transform>
+                
+                <transform translation="-2 0 0">
+                    <shape>
+                        <appearance>
+                            <material diffusecolor="red"></material>
+                        </appearance>
+                        <box></box></shape>
+                </transform>
+                
+                <transform translation="-2 0 0">
+                    <shape>
+                        <appearance><material diffusecolor="red"></material>
+                        </appearance>
+                        <box></box>
+                    </shape>
+                </transform>
+                
+                <transform translation="-2 0 0">
+                    <shape>
+                        <appearance>
+                            <material diffusecolor="red"></material>
+                        </appearance>
+                        <box></box>
+                    </shape>
+                </transform>
+           
+            
+            </scene>
+-->
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+      <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+		<meta http-equiv='Content-Type' content='text/html;charset=utf-8'/>
+		<title>My first X3DOM page</title>
+        <script type="text/javascript" src="http://www.x3dom.org/download/dev/x3dom.js"></script>
+        <link rel="stylesheet" href="http://www.x3dom.org/download/dev/x3dom.css">
+	</head>
+	<body>
+		<h1>My X3DOM world</h1>
+		<p>
+			This is my first html page with some 3d objects.
+		</p>
+		<x3d width="500px" height="400px">
+			<scene render="true" bboxcenter="0,0,0" bboxsize="-1,-1,-1" pickmode="idBuf" dopickpass="true"> 
+           <group>
+                <transform translation="-2 0 0">
+                    <shape>
+                        <appearance>
+                            <material diffusecolor="red"></material>
+                        </appearance>
+                        <sphere></sphere>
+                    </shape>
+                </transform>
+                
+                <transform translation="2 0 0">
+                    <shape>
+                        <appearance>
+                            <material diffusecolor="red"></material>
+                        </appearance>
+                        <sphere></sphere>
+                    </shape>
+                </transform>
+                
+                <transform translation="-2 2 2">
+                    <shape>
+                        <appearance><material diffusecolor="red"></material>
+                        </appearance>
+                        <sphere></sphere>
+                    </shape>
+                </transform>
+                
+                <transform translation="2 2 2">
+                    <shape>
+                        <appearance>
+                            <material diffusecolor="red"></material>
+                        </appearance>
+                        <sphere></sphere>
+                    </shape>
+                </transform>
+           
+            </group>
+            </scene>
+		</x3d>
+	</body>
