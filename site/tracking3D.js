@@ -58,15 +58,8 @@ var users = [
         color: "#d6203c",
         pos: [[120, 140], [130, 160], [140, 185], [150, 200]],
         pastPos: []
-      },
+    }
 
-
- //                {
- //                    user: 4,
- //                    color: "#d6203c",
- //                    pos:  [[20, 145], [120, 110], [90, 105], [120, 130]],
- //                    pastPos:[] 
- //                  }
 ];
 
 
@@ -76,29 +69,8 @@ var users = [
 //having user(s) move forward random amount when running tests/prototyping
 var animate = function () {
     if (anim) {
-        var l = users.length;
-        for (i = 0; i < l; i++) {
-            randomMove(i);
-            console.log("move to " + users[i].user);
-        }
-
+        refreshData(series);
     }
-
-    //This chunk of code animates the 'breathing' of every circle
-    //                var circ = svg.selectAll("circle")
-    //                            .transition()
-    //                            .duration(function(d,i){return (500 + (500 / (i%4 + 1)));})
-    //                            .attr("r", function(d,i){return (1/((i%4) + 1))*20;})
-    //                            .style("stroke-width", 2);
-    //                circ.transition()
-    //                    .duration(1000)
-    //                    .attr("r", radiusAnimate)
-    //                    .style("stroke-width", 1);  
-
-    //updates the visuals (only necessary if the data has been changed (aka random move)
-    //this line should be commented out if you want the breathing effect. I'm not sure why :\
-    //refreshData();
-    updateData(series);
 };
 
 //returns the user's ID (aka their user#)
@@ -259,8 +231,7 @@ var updateData = function (d) {
     shapes.transition()
         .duration(1000)
         .attr("translation", function (d, i) {
-            console.log("this should be updated to " + getX(d) + " 0.0 " + getY(d));
-            return getX(d) + " 0.0 " + getY(d);
+            return getX(d) + " 1.0 " + getY(d);
         })
 
     shapesEnter
@@ -490,6 +461,7 @@ d3.selectAll("button").on("click", function (d) {
     //ATM, animating means moving all user a random amount (prototyping only?)
     else if (buttonID == "animate") {
         anim = !anim;
+        console.log("animate: " + anim);
     }
     //Takes a random user and sets their current location to a random location
     //This does correctly update pastPos
@@ -553,4 +525,4 @@ d3.selectAll("button").on("click", function (d) {
 });
 
 //Calls that function ever #ms
-setInterval(animate, 2000);
+setInterval(animate, 1000);
