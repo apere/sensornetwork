@@ -345,7 +345,7 @@ scene.append("pointLight")
     .attr("shadowFilterSize", 3);
 
 
-scene.append("background").attr("skyColor", "1.000 1.000 1.000")
+scene.append("background").attr("skyColor", "000 000 000")
 
 var past = "";
 
@@ -391,7 +391,7 @@ var floor = scene.append("x3d:group")
 
 floor.append("appearance")
     .append("material")
-    .attr("diffuseColor", "#f8c900")
+    .attr("diffuseColor", "#956a0b")
     .attr("transparency", .5);
 
 floor.append("box").attr("size", "60 .2 60");
