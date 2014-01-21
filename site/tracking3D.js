@@ -23,8 +23,8 @@
 //- To identify people (are they in the studio: fitbit, phone connected to wifi, computer connected to network, etc. Hot Zones (aka people's working areas)
 //- Finding other possible data to collect: heat across the room, etc.
 
-                      
-                      
+
+
 //Width and height of svm
 var w = 800;
 var h = 800;
@@ -41,37 +41,32 @@ var selectedUser;
 // pos: this is an array of length 4 (or less...never more than 4) of the user's most recent positions pos[0] should be the most recent location. Each index contains an array of length 2 [x-coordinate,y-coordinate]
 // pastPos: this is an array of any length, it stores all of the user's past locations with the most recent at pastPos[0]. Each index contains an array of length 2 [x-coordinate,y-coordinate]
 var users = [
-      {
+    {
         user: 0,
         color: "#149314",
-        pos:  [ [80, 85],[60, 75],[45, 60],[30, 35]],
-        pastPos:[]  
+        pos: [[80, 85], [60, 75], [45, 60], [30, 35]],
+        pastPos: []
       },
-     {
+    {
         user: 1,
         color: "#3d3dc3",
-        pos:  [[60, 110], [70, 120], [80, 135], [90, 155]],
-        pastPos:[] 
+        pos: [[60, 110], [70, 120], [80, 135], [90, 155]],
+        pastPos: []
       },
     {
         user: 2,
         color: "#d6203c",
-        pos:  [[120, 140], [130, 160], [140, 185], [150, 200]],
-        pastPos:[] 
+        pos: [[120, 140], [130, 160], [140, 185], [150, 200]],
+        pastPos: []
       },
-    
-    {
-        user: 3,
-        color: "#ba00ff",
-        pos:  [[45, 30], [35, 20], [40, 15], [50, 25]],
-        pastPos:[] 
-      }
-//                {
-//                    user: 4,
-//                    color: "#d6203c",
-//                    pos:  [[20, 145], [120, 110], [90, 105], [120, 130]],
-//                    pastPos:[] 
-//                  }
+
+
+ //                {
+ //                    user: 4,
+ //                    color: "#d6203c",
+ //                    pos:  [[20, 145], [120, 110], [90, 105], [120, 130]],
+ //                    pastPos:[] 
+ //                  }
 ];
 
 
@@ -79,157 +74,156 @@ var users = [
 //This contains code that you want to execute each frame
 //Including animations (aka breathing circles) or for continously 
 //having user(s) move forward random amount when running tests/prototyping
-var animate = function(){
-//    if(anim){
-//        var l = users.length;
-//        for(i = 0; i < l; i++){
-//         randomMove(i);   
-//        }
-//        
-//    }
-    
+var animate = function () {
+    if (anim) {
+        var l = users.length;
+        for (i = 0; i < l; i++) {
+            randomMove(i);
+            console.log("move to " + users[i].user);
+        }
+
+    }
+
     //This chunk of code animates the 'breathing' of every circle
-//                var circ = svg.selectAll("circle")
-//                            .transition()
-//                            .duration(function(d,i){return (500 + (500 / (i%4 + 1)));})
-//                            .attr("r", function(d,i){return (1/((i%4) + 1))*20;})
-//                            .style("stroke-width", 2);
-//                circ.transition()
-//                    .duration(1000)
-//                    .attr("r", radiusAnimate)
-//                    .style("stroke-width", 1);  
-    
+    //                var circ = svg.selectAll("circle")
+    //                            .transition()
+    //                            .duration(function(d,i){return (500 + (500 / (i%4 + 1)));})
+    //                            .attr("r", function(d,i){return (1/((i%4) + 1))*20;})
+    //                            .style("stroke-width", 2);
+    //                circ.transition()
+    //                    .duration(1000)
+    //                    .attr("r", radiusAnimate)
+    //                    .style("stroke-width", 1);  
+
     //updates the visuals (only necessary if the data has been changed (aka random move)
     //this line should be commented out if you want the breathing effect. I'm not sure why :\
-    refreshData();
+    //refreshData();
+    updateData(series);
 };
 
 //returns the user's ID (aka their user#)
 //Some code might be using this as an index but that is frowned upon.
-var key = function(d){
+var key = function (d) {
     return d.user;
 };
 
 //returns a user's color
-var getColor = function(d){
+var getColor = function (d) {
     return d.color;
 };
 
 //returns a user's position
-var getPosition = function(d){
-    return d.pos;  
+var getPosition = function (d) {
+    return d.pos;
 };
 
 //returns the scaled x-coordinate
-var getX = function(d){
-    return xScale(d[0]);   
+var getX = function (d) {
+    return xScale(d[0]);
 };
 
 //Returns the scaled y-coordinate
-var getY = function(d){
+var getY = function (d) {
     return yScale(d[1]);
 };
 
-var pointLabel = function(d, i, j){
+var pointLabel = function (d, i, j) {
     return j + " - " + i + " : (" + d[0] + ", " + d[1] + ")";
 };
 
-function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
-function hexToG(h) {return parseInt((cutHex(h)).substring(2,4),16)}
-function hexToB(h) {return parseInt((cutHex(h)).substring(4,6),16)}
-function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h}
 
 //Returns the correct radius for the user's current location.
 //Only works if you are iterating through a maximum of 4 circles.
 //If you are are iterating through anymore, use radiusAnimate
-var radius = function(d,i){
+var radius = function (d, i) {
     return rScale(i);
 };
 
 //Returns the correct radius for the user's current locations
 //even if you're iterating through ALL circles
-var radiusAnimate = function(d,i){
-    return radius(d, i%4);
+var radiusAnimate = function (d, i) {
+    return radius(d, i % 4);
 };
 
 //Returns the opactiy of each circle in the user's current locations
-var opact = function(d, i) {
-    return 1/(i+1) *1.5;
+var opact = function (d, i) {
+    return 1 / (i + 1) * 1.5;
 };
 
+//not updated for 3D
 //Displays a non-updating trail of one (the current) user's past locations
-var showTrail = function(d){
-        console.log("clicked on " + d.user);
-        svg.selectAll("#past").remove();
-        svg.append("g").attr("class", "pastCircles").attr("id", "past").style("fill", d.color);
-        var selection = svg.select("series, #past");
-    
-        //draw all circles
-        svg.selectAll("series, #past")
-                .selectAll("circle")
-                .data(d.pastPos, function(d){return d;})
-                .enter().append("circle")
-                .attr("id", "past")
-                .attr("cx", getX)
-                .attr("cy", getY)
-                .attr("r", function(d){return 5;})
-                .style("opacity", .5);
-    
-        //draw all connecting lines
-        var l = d.pastPos.length;
-        
-        //line attaching this to current position
-        selection.append("line")
-            .attr("x1", xScale(d.pastPos[0][0]))
-            .attr("y1", yScale(d.pastPos[0][1]))
-            .attr("x2", xScale(d.pos[d.pos.length - 1][0]))
-            .attr("y2", yScale(d.pos[d.pos.length - 1][1]))
-            .style("stroke", 2)
-            .style("opacity", .5)
-            .style("stroke", d.color);
-        
-        
-        for(var i = 0; i < l - 1; i++){
-         selection.append("line")
-            .attr("x1", xScale(d.pastPos[i][0]))
-            .attr("y1", yScale(d.pastPos[i][1]))
-            .attr("x2", xScale(d.pastPos[i+1][0]))
-            .attr("y2", yScale(d.pastPos[i+1][1]))
-            .style("stroke", 2)
-            .style("opacity", .5)
-            .style("stroke", d.color);
-        }
-    
-    };
+//var showTrail = function (d) {
+//    console.log("clicked on " + d.user);
+//    svg.selectAll("#past").remove();
+//    svg.append("g").attr("class", "pastCircles").attr("id", "past").style("fill", d.color);
+//    var selection = svg.select("series, #past");
+//
+//    //draw all circles
+//    svg.selectAll("series, #past")
+//        .selectAll("circle")
+//        .data(d.pastPos, function (d) {
+//            return d;
+//        })
+//        .enter().append("circle")
+//        .attr("id", "past")
+//        .attr("cx", getX)
+//        .attr("cy", getY)
+//        .attr("r", function (d) {
+//            return 5;
+//        })
+//        .style("opacity", .5);
+//
+//    //draw all connecting lines
+//    var l = d.pastPos.length;
+//
+//    //line attaching this to current position
+//    selection.append("line")
+//        .attr("x1", xScale(d.pastPos[0][0]))
+//        .attr("y1", yScale(d.pastPos[0][1]))
+//        .attr("x2", xScale(d.pos[d.pos.length - 1][0]))
+//        .attr("y2", yScale(d.pos[d.pos.length - 1][1]))
+//        .style("stroke", 2)
+//        .style("opacity", .5)
+//        .style("stroke", d.color);
+//
+//
+//    for (var i = 0; i < l - 1; i++) {
+//        selection.append("line")
+//            .attr("x1", xScale(d.pastPos[i][0]))
+//            .attr("y1", yScale(d.pastPos[i][1]))
+//            .attr("x2", xScale(d.pastPos[i + 1][0]))
+//            .attr("y2", yScale(d.pastPos[i + 1][1]))
+//            .style("stroke", 2)
+//            .style("opacity", .5)
+//            .style("stroke", d.color);
+//    }
+//
+//};
 
 //Moves the current user a random amount in the x and y direction. Useful for prototyping a real person's motion path
 //for a person walking at varying speeds/velocities
-var randomMove = function(d){
-    //console.log(d);
-    console.log("trying animate on index " + d);
-    for(var i = 0; i < users.length; i++){
-     console.log("Index: " + i + " User " + users[i].user);   
-    }
+var randomMove = function (d) {
     var temp = users[d].pos;
     temp = temp[0];
-    
-    if(users[d].pos.length >= 4){
+
+    if (users[d].pos.length >= 4) {
         var temp2 = users[d].pos.pop();
         users[d].pastPos.unshift(temp2);
-     }
-    
-     var r1 = Math.floor(Math.random()*40) - 10;
-     var r2 = Math.floor(Math.random()*40) - 10;
-     var x1 = parseInt(temp[0]) + r1;
-     var y1 = parseInt(temp[1]) + r2;
-     console.log("at (" + temp[0] + "," + temp[1] + ") to (" + x1 + ", " + y1 + ")" + "randoms: " + r1 + ", " + r2);
-     users[d].pos.unshift([x1, y1]);        
+    }
+
+    var r1 = Math.floor(Math.random() * 40) - 10;
+    var r2 = Math.floor(Math.random() * 40) - 10;
+    var x1 = parseInt(temp[0]) + r1;
+    var y1 = parseInt(temp[1]) + r2;
+    console.log("at (" + temp[0] + "," + temp[1] + ") to (" + x1 + ", " + y1 + ")" + "randoms: " + r1 + ", " + r2);
+    users[d].pos.unshift([x1, y1]);
 };
 
-var refreshData = function(){
-     d3.json("userRead.php", function(error, data) {
-         users = data;
-            });
+var refreshData = function () {
+    d3.json("userRead.php", function (error, data) {
+        users = data;
+    });
+
     updateData(series);
 };
 
@@ -237,214 +231,173 @@ var refreshData = function(){
 //adds or removes circles, updates circle locations (same thing for labels if you want those)
 //updates anything associated per user (aka a legend and whatnot)
 //If you want, it has code (commented out) to update the scales and the axes (if you want to zoom in as much as possible... but that doesn't work for the current model)
-var updateData = function(d){
-//            //updating the scales
-//                xScale.domain([0, d3.max(users, function(d, i) {  
-//                         return d3.max(d.pos, function(d, i){ 
-//                             return d[0]
-//                         }) 
-//                     })])
-//                     .range([padding, w - padding*2]);
-//            
-//                yScale.domain([0, d3.max(users, function(d, i) {  
-//                         return d3.max(d.pos, function(d, i){ 
-//                             return d[1]
-//                         }) 
-//                     })])
-//                     .range([h - padding, padding]);
-    
+var updateData = function (d) {
     //updating the data for all users w/ their visual (weird wording?)
-    series = svg.selectAll("g.series").data(users, key);
-    
-//New elements
-    //Adding new user(s)
-    series.enter().append("svg:g")
-            .attr("class", "series")
-            .style("fill", getColor)
-            .attr("id", function(d){return "user" + d.user});
-            
-    //adding new circle(s)
-    series.selectAll("circle").data(getPosition)
-            .enter()
-            .append("circle")
-            .attr("id", function(d, i){return "circle" + i})
-            .attr("cx", 0)
-            .attr("cy", 0)
-            .style("stroke", "#d4d1d1");
-    
 
-    
-      select = select.data(users,key);
-      //adding new users to dropdown menue
-      select.enter()
-            .append("option")
-            .attr("value", function(d){return d.user;})
-            .text(function(d){ return "user " + d.user;});
-    
+    series = series.data(users, key);
+
+    //New elements
+    //Adding new user(s)
+    series.enter().append("x3d:group")
+        .attr("class", "series")
+        .style("diffuseColor", getColor)
+        .attr("id", function (d) {
+            return "user" + d.user
+        });
+
+    //adding new spheres(s)
+    shapes = series.selectAll("transform").data(getPosition);
+    shapesEnter = shapes
+        .enter()
+        .append("transform")
+        .attr("translation", function (d, i) {
+            return getX(d) + " 1.0 " + getY(d);
+        })
+        .append("shape")
+
+    //updating all of the circles
+    shapes.transition()
+        .duration(1000)
+        .attr("translation", function (d, i) {
+            console.log("this should be updated to " + getX(d) + " 0.0 " + getY(d));
+            return getX(d) + " 0.0 " + getY(d);
+        })
+
+    shapesEnter
+        .append("appearance")
+        .append("material")
+        .attr("diffuseColor", function (d, i) {
+            var p = d3.select(this.parentNode.parentNode.parentNode.parentNode);
+            return p.datum().color;
+        });
+
+    shapesEnter
+        .append("sphere")
+        .attr("radius", radius);
+
+
+    select = select.data(users, key);
+    //adding new users to dropdown menue
+    select.enter()
+        .append("option")
+        .attr("value", function (d) {
+            return d.user;
+        })
+        .text(function (d) {
+            return "user " + d.user;
+        });
+
     //updating the legend of users (adding or removing users)
-    form = form.data(users,key);
+    form = form.data(users, key);
     form.enter().append("p")
         .attr("id", key)
-        .text(function(d){ return "user " + d.user;})
-        .style("color", getColor)
-        .on("click", showTrail);
-    
-//Updating current elements (no reason to update the users... they don't actually change...or shouldn't... if you change something about them, insert code here)
-    series.style("color", getColor)
-    
-    //updating all of the circles
-    series.selectAll("circle")
-         .data(getPosition)
-         .transition()
-         .duration(1000)
-         .attr("cx", getX)
-         .attr("cy", getY)
-         .attr("r", radius)
-         .style("opacity", opact);
+        .text(function (d) {
+            return "user " + d.user;
+        })
+        .style("color", getColor);
+    // .on("click", showTrail);
 
-//                //updating all of the labels
-//                series.selectAll("text")
-//                     .data(getPosition)
-//                     .transition()
-//                     .duration(1000)
-//                     .attr("x", getX)
-//                     .attr("y", getY)
-//                     .text(pointLabel)
-      
-//Removing all elements associated with data that no longer exists
+    //Updating current elements (no reason to update the users... they don't actually change...or shouldn't... if you change something about them, insert code here)
+    series.style("color", getColor)
+
+
+
+
+    //Removing all elements associated with data that no longer exists
     series.exit()
-         .transition()
-         .duration(100)
-         .attr("cx", w)
-         .attr("x", w)
-         .remove();
-    
+        .transition()
+        .duration(100)
+        .remove();
+
+    shapes.exit()
+        .transition()
+        .duration(100)
+        .remove();
+
     //removing users from dropdown
     select.exit().remove();
-    
+
     //removing users from legend
     form.exit().remove();
-    
-//                //Update X axis
-//                svg.select(".x.axis")
-//                   .transition()
-//                   .duration(1000)
-//                   .call(xAxis);
-//                                        
-//                 //Update Y axis
-//                 svg.select(".y.axis")
-//                    .transition()
-//                    .duration(1000)
-//                    .call(yAxis);
-    
-    
 };
 
 
-//            //calculating the scale using the maximum position location values
-//            var xScale = d3.scale.linear()
-//                     .domain([0, d3.max(users, function(d, i) {  
-//                         return d3.max(d.pos, function(d, i){ 
-//                             return d[0]
-//                         }) 
-//                     })])
-//                     .range([padding, w - padding*2]);
-//            
-//            var yScale = d3.scale.linear()
-//                     .domain([0, d3.max(users, function(d, i) {  
-//                         return d3.max(d.pos, function(d, i){ 
-//                             return d[1]
-//                         }) 
-//                     })])
-//                     .range([h - padding, padding]);
-
 //calculating the scale using the maximum position location values
 var xScale = d3.scale.linear()
-             .domain([0, 400])
-             .range([-30, 30]);
+    .domain([0, 400])
+    .range([-30, 30]);
 
 var yScale = d3.scale.linear()
-             .domain([0, 400])
-             .range([-30,30]);
+    .domain([0, 400])
+    .range([-30, 30]);
 
 var rScale = d3.scale.linear()
-             .domain([1,4])
-             .range([.6, 1.5]);
+    .domain([1, 4])
+    .range([.6, 1.5]);
 
 //Define X axis
 var xAxis = d3.svg.axis()
-            .scale(xScale)
-            .orient("bottom")
-            .ticks(5);
+    .scale(xScale)
+    .orient("bottom")
+    .ticks(5);
 
 //Define Y axis
 var yAxis = d3.svg.axis()
-            .scale(yScale)
-            .orient("left")
-            .ticks(5);
+    .scale(yScale)
+    .orient("left")
+    .ticks(5);
 
-var x3d= d3.select("#col2")
-            .append("x3d")
-            .attr("width", w)
-            .attr("height", h);
+var x3d = d3.select("#col2")
+    .append("x3d")
+    .attr("width", w)
+    .attr("height", h);
 
 var scene = x3d.append("scene");
 
 
 scene.append("viewpoint")
-    .attr("fieldOfView", .8)
-    .attr("position", "-18, -75, -12")
-    .attr( "orientation", "200 0 0 1.5" )
+    .attr("fieldOfView", 1.5)
+    .attr("position", "0, 20, 40")
+    .attr("orientation", "1 0 0 -0.75")
     .attr("zNear", .01)
     .attr("zFar", 1000);
 
-var past = "";          
+var past = "";
 
 //getting all of the data points
 var series = scene.selectAll("series")
-        .data(users, key).enter().append("x3d:group")
-        .attr("class", "series")
-        .attr("id", function(d){return "user" + d.user;})
-        .attr("diffuseColor", getColor);
-    
+    .data(users, key).enter().append("x3d:group")
+    .attr("class", "series")
+    .attr("id", function (d) {
+        return "user" + d.user;
+    })
+    .attr("diffuseColor", getColor);
+
 
 //Adding the circles
 var shapes = series.selectAll("transform").data(getPosition);
 var shapesEnter = shapes
     .enter()
     .append("transform")
-    .attr("translation", function(d,i){return getX(d) + " 0.0 " + getY(d);})
+    .attr("translation", function (d, i) {
+        return getX(d) + " 1.0 " + getY(d);
+    })
     .append("shape");
-    
-//    shapes.transition()
-//         .duration(1000)
-//         .attr("translation", function(d, i){return getX(d) + " 0.0 " + getY(d);})
-//         .attr("scale", 1);
 
-//            //drawing the labels
-//            series.selectAll("text")
-//                 .data(getPosition)
-//                 .enter().append("text")
-//                 .attr("x", getX)
-//                 .attr("y", getY)
-//                 .text(pointLabel)
-//                 .attr("font-family", "sans-serif")
-//                 .attr("font-size", "11px")
-//                 .attr("fill", "black");
 
 shapesEnter
     .append("appearance")
     .append("material")
-    .attr("diffuseColor", function(d,i){
+    .attr("diffuseColor", function (d, i) {
         var p = d3.select(this.parentNode.parentNode.parentNode.parentNode);
         return p.datum().color;
     });
 
-    
+
 shapesEnter.append("sphere")
     .attr("radius", radius);
 
-var  floor = scene.append("x3d:group")
+var floor = scene.append("x3d:group")
     .attr("class", "series")
     .attr("id", "floor")
     .append("transform")
@@ -457,143 +410,141 @@ floor.append("appearance")
     .attr("transparency", .5);
 
 floor.append("box").attr("size", "60 .2 60");
-    
 
 
-////Create X axis
-//svg.append("g")
-//        .attr("class", "x axis")
-//        .attr("transform", "translate(0," + (h - padding) + ")")
-//        .call(xAxis);
-//
-////Create Y axis
-//svg.append("g")
-//        .attr("class", "y axis")
-//        .attr("transform", "translate(" + padding + ",0)")
-//        .call(yAxis);
+var select = d3.select("body").select("form").select("select").selectAll("userDrop").data(users, key)
+    .enter()
+    .append("option")
+    .attr("value", function (d) {
+        return d.user;
+    })
+    .text(function (d) {
+        return "user " + d.user;
+    })
+    .style("color", getColor);
 
-var select = d3.select("body").select("form").select("select").selectAll("userDrop").data(users,key)
-            .enter()
-            .append("option")
-            .attr("value", function(d){return d.user;})
-            .text(function(d){ return "user " + d.user;})
-            .style("color", getColor);
-
-var form = d3.select("#col1").selectAll("p").data(users,key)
-            .enter().append("p")
-            .attr("id", key)
-            .text(function(d){ return "user " + d.user;})
-            .style("color", getColor)
-            .on("click", showTrail);
+var form = d3.select("#col1").selectAll("p").data(users, key)
+    .enter().append("p")
+    .attr("id", key)
+    .text(function (d) {
+        return "user " + d.user;
+    })
+    .style("color", getColor);
+//.on("click", showTrail);
 
 
 //Actions for clicking buttons
-d3.selectAll("button").on("click", function(d){
-  
-   var buttonID = d3.select(this).attr("class");
-    
+d3.selectAll("button").on("click", function (d) {
+
+    var buttonID = d3.select(this).attr("class");
+
     //Adds a random user to exact location
     //super each to make it go random... I should probably write an add user function***
-    if( buttonID == "add") {
-        
-        var col1 =  "hsl(" + Math.random() * 360 + ",70%,60%)";
-            users.push({ 
-                user: users.length,
-                color: col1,
-                pos:  [[70, 40], [75,34], [99, 80], [110, 85]],
-                pastPos: []
-            });   
-                          
+    if (buttonID == "add") {
+
+        var col1 = "hsl(" + Math.random() * 360 + ",70%,60%)";
+        users.push({
+            user: users.length,
+            color: col1,
+            pos: [[70, 40], [75, 34], [99, 80], [110, 85]],
+            pastPos: []
+        });
+
     }
     //Changes all user's most current location to this... currently it completely disregards the last 4 current
     //I should probably write it so that it pushes the last 4 into pastPos... but this is mainly for prototyping anyway
     //there isn't any real value to this function... (I know, bad programming Adam)
-    else if(buttonID == "update") {
+    else if (buttonID == "update") {
         var len = users.length;
-        
-        if(len >= 1)
-        {users[0].pos = [[60, 110], [70, 120], [80, 135], [90, 155]] ;}
-        if(len >= 2)
-        {users[1].pos = [[90, 140], [100, 160], [120, 205], [110, 210]];}
-        if(len >= 3)
-        {users[2].pos = [[20, 70], [30, 80], [40, 85], [50, 95]];}
-        if(len >= 4)
-        {users[3].pos = [[20, 145], [120, 110], [90, 105], [320, 330]];}
-        if(len >= 5)
-        {users[4].pos = [[50, 50], [0,0], [10, 95], [60, 300]];}
+
+        if (len >= 1) {
+            users[0].pos = [[60, 110], [70, 120], [80, 135], [90, 155]];
+        }
+        if (len >= 2) {
+            users[1].pos = [[90, 140], [100, 160], [120, 205], [110, 210]];
+        }
+        if (len >= 3) {
+            users[2].pos = [[20, 70], [30, 80], [40, 85], [50, 95]];
+        }
+        if (len >= 4) {
+            users[3].pos = [[20, 145], [120, 110], [90, 105], [320, 330]];
+        }
+        if (len >= 5) {
+            users[4].pos = [[50, 50], [0, 0], [10, 95], [60, 300]];
+        }
 
     }
     //Removes the user at position 0... hopefully one day, it will remove the selected user
-    else if(buttonID == "remove") {
+    else if (buttonID == "remove") {
         var temp = document.getElementById("drop");
-        var temp = temp.options[temp.selectedIndex].value ;
+        var temp = temp.options[temp.selectedIndex].value;
         console.log("removing " + temp);
-        
-        if(temp == "none"){
-            users.shift();}
-        else{
+
+        if (temp == "none") {
+            users.shift();
+        } else {
             //EMPTY
-        }   
+        }
     }
     //Toggles whether or not we are currently animating
     //ATM, animating means moving all user a random amount (prototyping only?)
-    else if(buttonID == "animate") {
-            anim = !anim;
-        }
+    else if (buttonID == "animate") {
+        anim = !anim;
+    }
     //Takes a random user and sets their current location to a random location
     //This does correctly update pastPos
-    else if(buttonID == "updateOne") {
-        var index = Math.floor(Math.random()*users.length);
-        if(index >= users.length)
-        {index = users.length -  index;}
-                console.log(index);
+    else if (buttonID == "updateOne") {
+        var index = Math.floor(Math.random() * users.length);
+        if (index >= users.length) {
+            index = users.length - index;
+        }
+        console.log(index);
         var temp = users[index].pos.pop();
         users[index].pastPos.unshift(temp);
-        users[index].pos.unshift([Math.floor(Math.random()*100), Math.floor(Math.random()*100)]);
-        
+        users[index].pos.unshift([Math.floor(Math.random() * 100), Math.floor(Math.random() * 100)]);
+
     }
     //This button is the submission for the form. It either adds a new user and
     //puts its current location to the entered coordinates or it changes the
     //selected user's current location to the supplied coordinates
-    else if(buttonID == "newLoc") {
+    else if (buttonID == "newLoc") {
         var sel = document.getElementById("drop");
-        var selValue = sel.options[sel.selectedIndex].value ;
+        var selValue = sel.options[sel.selectedIndex].value;
         var newLoc = [document.getElementById("newLocX").value, document.getElementById("newLocY").value];
         console.log("user: " + selValue + " at (" + newLoc[0] + ", " + newLoc[1] + ")");
-        
-        if(!(isNaN(newLoc[0])) && !(isNaN(newLoc[1]))){
-            if(selValue == "newUser"){
-                var col =  "hsl(" + Math.random() * 360 + ",100%,50%)";
-                          
-                console.log(col);          
-                users.push({ 
+
+        if (!(isNaN(newLoc[0])) && !(isNaN(newLoc[1]))) {
+            if (selValue == "newUser") {
+                var col = "hsl(" + Math.random() * 360 + ",100%,50%)";
+
+                console.log(col);
+                users.push({
                     user: users.length,
                     color: col,
-                    pos:  [newLoc],
+                    pos: [newLoc],
                     pastPos: []
                 });
-                
-            }else{
-                if(users[selValue].pos.length >= 4){
+
+            } else {
+                if (users[selValue].pos.length >= 4) {
                     var temp = users[selValue].pos.pop();
                     users[selValue].pastPos.unshift(temp);
                 }
                 users[selValue].pos.unshift(newLoc);
-                
+
             }
-            
-            
-            }
-        }else if(buttonID == "move") {
-            var t= document.getElementById("drop");
-            var tV = t.options[t.selectedIndex].value;
-            
-            randomMove(tV); 
+
+
         }
-        else if(buttonID == "refresh") {
-            refreshData(); 
-        }
-    
+    } else if (buttonID == "move") {
+        var t = document.getElementById("drop");
+        var tV = t.options[t.selectedIndex].value;
+
+        randomMove(tV);
+    } else if (buttonID == "refresh") {
+        refreshData();
+    }
+
     //All of these buttons do something to the data
     //therefore, we need to update the visuals associated with that data
     updateData(series);
@@ -602,5 +553,4 @@ d3.selectAll("button").on("click", function(d){
 });
 
 //Calls that function ever #ms
-//setInterval(animate, 1000);
-
+setInterval(animate, 2000);
