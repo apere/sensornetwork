@@ -108,7 +108,7 @@ var pointLabel = function (d, i, j) {
 //Only works if you are iterating through a maximum of 4 circles.
 //If you are are iterating through anymore, use radiusAnimate
 var radius = function (d, i) {
-    return rScale(i);
+    return rScale(4 - i);
 };
 
 //Returns the correct radius for the user's current locations
@@ -332,6 +332,20 @@ scene.append("viewpoint")
     .attr("orientation", "1 0 0 -0.75")
     .attr("zNear", .01)
     .attr("zFar", 1000);
+
+//adding a light & activating shadows
+scene.append("pointLight")
+    .attr("ambientIntensity", 0)
+    .attr("intensity", .4)
+    .attr("location", "0 20 0")
+    .attr("radius", 55)
+    .attr("on", "true")
+    .attr("shadowIntensity", .25)
+    .attr("shadowCascades", 3)
+    .attr("shadowFilterSize", 3);
+
+
+scene.append("background").attr("skyColor", "1.000 1.000 1.000")
 
 var past = "";
 
